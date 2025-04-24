@@ -1,0 +1,100 @@
+.signinContainer {
+  max-width: 900px;
+  margin: 80px auto;
+  margin-top: 500px;
+  margin-bottom: 500px;
+  padding: 40px 80px 80px 80px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 580px) {
+  .signinContainer {
+    padding: 40px;
+  }
+}
+
+.signinHeader {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputLabel {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.inputField {
+  margin-bottom: 10px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.2s ease-in-out;
+}
+
+.inputField:focus {
+  border-color: var(--primary-90);
+}
+
+.submitButton {
+  background-color: var(--primary-100);
+  width: 400px;
+  color: white;
+  padding: 12px 0;
+  margin-top: 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+@media screen and (max-width: 580px) {
+  .submitButton {
+    width: 200px;
+  }
+}
+
+.submitButton:hover {
+  background-color: var(--primary-50);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  color: #dc3545;
+  font-size: 0.9rem;
+  padding-bottom: 1.5rem;
+  text-align: center;
+}
+
+.formErrorMessage {
+  color: #dc3545;
+  font-size: 0.9rem;
+  padding-bottom: 1.5rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+}
