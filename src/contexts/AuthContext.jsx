@@ -1,28 +1,63 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [isAdmin, setIsAdmin] = useState(false)
-    const [user, setUser] = useState(null)
-    
-    const signIn = async ({email, password, isPersistent}) => {
+export const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("user") !== null;
+  });
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      setIsAuthenticated(true);
     }
+  }, []);
+  //När funktionen körs så kommer det posta till url email och password finns det i databasen loggas anväder in.
+  //När användaren loggas in så sparas user objektet i localStorage och isAuthenticated sätts till true.
+  //När användaren loggas ut så tas user objektet bort från localStorage och isAuthenticated sätts till false.
+  const signIn = async ({ email, password, isPersistent }) => {
+    try {
+      const response = await fetch(
+        "https://userloginapi-c8dvg7h3hwhmaahn.swedencentral-01.azurewebsites.net/api/login",
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    const signUp = async ({email}) => {
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
 
+      const data = await response.json();
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data));
+      if (localStorage.getItem("user")) {
+        setIsAuthenticated(true);
+      }
+    } catch (error) {
+      console.error("Sign-in failed:", error);
+      throw error;
     }
+  };
 
-    return (
-        <AuthContext.Provider value={{isAuthenticated, isAdmin, user, signUp, signIn}}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+  const signUp = async ({ email }) => {};
+
+  return (
+    <AuthContext.Provider
+      value={{ isAuthenticated, isAdmin, user, signUp, signIn }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export const useAuth = () => {
-    const context = useContext(AuthContext)
-    return context
-}
+  const context = useContext(AuthContext);
+  return context;
+};
