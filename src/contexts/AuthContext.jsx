@@ -46,7 +46,51 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUp = async ({ email }) => {};
+  const signUp = async ({
+    firstName,
+    lastName,
+    email,
+    password,
+    phoneNumber,
+  }) => {
+    try {
+      const response = await fetch("https://localhost:7009/api/signup/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          password,
+          phoneNumber,
+        }),
+      });
+
+      const contentType = response.headers.get("content-type");
+
+      if (!response.ok) {
+        const errorData = contentType?.includes("application/json")
+          ? await response.json()
+          : await response.text();
+        throw new Error(errorData.message || errorData || "Signup failed");
+      }
+
+      const data = contentType?.includes("application/json")
+        ? await response.json()
+        : { message: await response.text() };
+
+      localStorage.setItem("user", JSON.stringify(data));
+      setUser(data.user ?? null);
+      setIsAuthenticated(true);
+
+      return data;
+    } catch (error) {
+      console.error("Sign-up failed:", error);
+      throw error;
+    }
+  };
 
   return (
     <AuthContext.Provider
