@@ -12,6 +12,7 @@ const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
 
 const UserDashboard = lazy(() => import("../partials/pages/user/Dashboard"));
 const UserBookings = lazy(() => import("../partials/pages/user/Bookings"));
+const EventList = lazy(() => import("../partials/pages/user/Event/EventList"))
 
 const AdminDashboard = lazy(() => import("../partials/pages/admin/Dashboard"));
 const AdminBookings = lazy(() => import("../partials/pages/admin/Bookings"));
@@ -30,10 +31,11 @@ export const routes = [
   },
   {
     layout: PortalLayout,
-    protected: true,
+    protected: false, // ändra till true senare
     children: [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/bookings", element: <UserBookings /> },
+      { path: "/events", element: <EventList /> }
     ],
   },
   {
