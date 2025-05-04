@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-
 .header {
   width: 100%;
   background-color: var(--Gray-20);
@@ -9,6 +7,8 @@
   justify-content: center;
   font-family: var(--font);
   border-bottom: none;
+  border-radius: 1.5rem;
+  margin: 0.5rem;
 }
 
 .header-content {
