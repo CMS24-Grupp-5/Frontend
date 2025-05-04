@@ -12,31 +12,33 @@ const Sidebar = () => {
       <nav className="sidebar-nav">
         <ul>
           <li>
-            <i className="fa-solid fa-grip"></i> Dashboard
+            <i className="fa-solid fa-grip"></i> <span> Dashboard</span>
           </li>
           <li>
-            <i className="fa-solid fa-calendar-check"></i> Bookings
+            <i className="fa-solid fa-calendar-check"></i>{" "}
+            <span> Bookings</span>
           </li>
           <li>
-            <i className="fa-solid fa-file-invoice"></i> Invoices
+            <i className="fa-solid fa-file-invoice"></i> <span> Invoices</span>
           </li>
           <li>
-            <i className="fa-solid fa-inbox"></i> Inbox
+            <i className="fa-solid fa-inbox"></i> <span> Inbox </span>
           </li>
           <li>
-            <i className="fa-solid fa-calendar"></i> Calendar
+            <i className="fa-solid fa-calendar"></i> <span> Calendar </span>
           </li>
           <li>
-            <i className="fa-solid fa-calendar-days"></i> Events
+            <i className="fa-solid fa-calendar-days"></i> <span> Events </span>
           </li>
           <li>
-            <i className="fa-solid fa-dollar-sign"></i> Financials
+            <i className="fa-solid fa-dollar-sign"></i>{" "}
+            <span> Financials </span>
           </li>
           <li>
-            <i className="fa-solid fa-image"></i> Gallery
+            <i className="fa-solid fa-image"></i> <span> Gallery </span>
           </li>
           <li>
-            <i className="fa-solid fa-star"></i> Feedback
+            <i className="fa-solid fa-star"></i> <span> Feedback </span>
           </li>
         </ul>
       </nav>
@@ -51,7 +53,8 @@ const Sidebar = () => {
           <button className="upgrade-btn">Try New Version</button>
         </div>
         <button className="logout-btn">
-          <i className="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+          <i className="fa-solid fa-arrow-right-from-bracket"></i>{" "}
+          <span> Sign Out </span>
         </button>
       </div>
     </aside>

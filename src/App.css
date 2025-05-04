@@ -43,13 +43,13 @@ body {
   grid-template-columns: 240px 1fr;
   height: calc(100dvh -0.5rem);
   gap: 0.5rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: auto 1fr;
+  }
 }
 
 .main-content {
   display: flex;
   flex-direction: column;
-}
-
-.header {
-  width: 100%;
 }
