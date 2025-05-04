@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.header {
+  width: 100%;
+  background-color: var(--background-color);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font);
+  border-bottom: 1px solid var(--gray-50);
+}
+
+.header-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-title h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--gray-90);
+}
+
+.header-title p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--gray-50);
+}
+
+.header-search {
+  position: relative;
+  flex-grow: 1;
+  max-width: 250px;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gray-50);
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+.search-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-50);
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  color: var(--gray-10);
+  background-color: var(--secondary-100);
+  border-radius: 50%;
+  transition: 0.3s;
+}
+.icon-button:hover {
+  background-color: var(--primary-90);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-image {
+  width: 32px;
+  height: 32px;
+  background-color: var(--cole-gray-10);
+  color: var(--gray-10);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-image:hover {
+  background-color: var(--primary-50);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: var(--gray-50);
+}

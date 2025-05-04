@@ -8,9 +8,10 @@
   --primary-50: #fcd3fe;
   --primary-90: #f589fa;
   --primary-100: #f26cf9;
-
+  --secondary-100: #37437d;
   --text-color: var(--gray-90);
   --background-color: var(--gray-10);
+  --cole-gray-10: #eeefff;
 }
 
 *,
