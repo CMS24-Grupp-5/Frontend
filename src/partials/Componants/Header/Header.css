@@ -2,13 +2,13 @@
 
 .header {
   width: 100%;
-  background-color: var(--background-color);
+  background-color: var(--Gray-20);
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font);
-  border-bottom: 1px solid var(--gray-50);
+  border-bottom: none;
 }
 
 .header-content {
@@ -22,7 +22,7 @@
 .header-title h1 {
   margin: 0;
   font-size: 1.5rem;
-  color: var(--gray-90);
+  color: var(--secondary-100);
 }
 
 .header-title p {
@@ -40,9 +40,10 @@
 .header-search input {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--gray-50);
+  border: none;
   border-radius: 1rem;
   font-size: 0.875rem;
+  outline: none;
 }
 
 .search-icon {
