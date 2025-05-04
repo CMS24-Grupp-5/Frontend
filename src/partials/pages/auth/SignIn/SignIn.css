@@ -1,9 +1,18 @@
-.signinContainer,
-.signupContainer {
+.signinContainer {
   max-width: 900px;
   margin: 80px auto;
   margin-top: 500px;
   margin-bottom: 500px;
+  padding: 40px 80px 80px 80px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.signupContainer {
+  max-width: 900px;
+  /* margin: 80px auto; */
+  /* margin-top: 500px; */
+  /* margin-bottom: 500px; */
   padding: 40px 80px 80px 80px;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -95,6 +104,11 @@
   color: #dc3545;
   font-size: 0.9rem;
   padding-bottom: 1.5rem;
+}
+
+.signupContainer .ContinerformErrorMessage {
+  display: block;
+  height: 10px;
 }
 
 .loading {

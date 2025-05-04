@@ -13,7 +13,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState("");
 
@@ -30,6 +30,11 @@ const SignUp = () => {
       newErrors.password = "Password must be at least 8 characters long.";
 
     setErrors(newErrors);
+    if (password.length < 8)
+      newErrors.password = "Password must be at least 8 characters long.";
+
+    if (password !== confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match.";
     return Object.keys(newErrors).length === 0;
   };
 
@@ -64,11 +69,12 @@ const SignUp = () => {
             onChange={(e) => setFirstName(e.target.value)}
             className="inputField"
           />
-          {errors.firstName && (
-            <div className="formErrorMessage">{errors.firstName}</div>
-          )}
+          <div className="ContinerformErrorMessage">
+            {errors.firstName && (
+              <div className="formErrorMessage">{errors.firstName}</div>
+            )}
+          </div>
         </div>
-
         <div className="inputWrapper">
           <label className="inputLabel">Last Name</label>
           <input
@@ -77,11 +83,12 @@ const SignUp = () => {
             onChange={(e) => setLastName(e.target.value)}
             className="inputField"
           />
-          {errors.lastName && (
-            <div className="formErrorMessage">{errors.lastName}</div>
-          )}
+          <div className="ContinerformErrorMessage">
+            {errors.lastName && (
+              <div className="formErrorMessage">{errors.lastName}</div>
+            )}
+          </div>
         </div>
-
         <div className="inputWrapper">
           <label className="inputLabel">Email</label>
           <input
@@ -90,9 +97,21 @@ const SignUp = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="inputField"
           />
-          {errors.email && (
-            <div className="formErrorMessage">{errors.email}</div>
-          )}
+          <div className="ContinerformErrorMessage">
+            {errors.email && (
+              <div className="formErrorMessage">{errors.email}</div>
+            )}
+          </div>
+        </div>
+        <div className="inputWrapper">
+          <label className="inputLabel">Phone Number (optional)</label>
+          <input
+            type="tel"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            className="inputField"
+          />
+          <div className="ContinerformErrorMessage"></div>
         </div>
 
         <div className="inputWrapper">
@@ -103,19 +122,25 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="inputField"
           />
-          {errors.password && (
-            <div className="formErrorMessage">{errors.password}</div>
-          )}
+          <div className="ContinerformErrorMessage">
+            {errors.password && (
+              <div className="formErrorMessage">{errors.password}</div>
+            )}
+          </div>
         </div>
-
         <div className="inputWrapper">
-          <label className="inputLabel">Phone Number (optional)</label>
+          <label className="inputLabel">Confirm Password</label>
           <input
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             className="inputField"
           />
+          <div className="ContinerformErrorMessage">
+            {errors.password && (
+              <div className="formErrorMessage">{errors.confirmPassword}</div>
+            )}
+          </div>
         </div>
 
         {generalError && <div className="errorMessage">{generalError}</div>}
