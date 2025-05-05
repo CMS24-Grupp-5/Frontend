@@ -110,8 +110,3 @@
   display: block;
   height: 10px;
 }
-
-.loading {
-  display: flex;
-  justify-content: center;
-}

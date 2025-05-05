@@ -89,7 +89,7 @@ const SignUpStepOne = () => {
 
         {generalError && <div className="errorMessage">{generalError}</div>}
         {loading && (
-          <div className="loading">
+          <div className="spinner">
             <div></div>
             <div></div>
             <div></div>
