@@ -77,7 +77,7 @@ const CompleteProfile = () => {
 
         {error && <div className="errorMessage">{error}</div>}
         {loading && (
-          <div className="loading">
+          <div className="spinner">
             <div></div>
             <div></div>
             <div></div>
