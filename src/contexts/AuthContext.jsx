@@ -46,27 +46,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUp = async ({
-    firstName,
-    lastName,
-    email,
-    password,
-    phoneNumber,
-  }) => {
+  const signUp = async ({ email, password }) => {
     try {
-      const response = await fetch("https://localhost:7009/api/signup/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          password,
-          phoneNumber,
-        }),
-      });
+      const response = await fetch(
+        "https://localhost:7108/api/SignUp/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
 
       const contentType = response.headers.get("content-type");
 
