@@ -40,7 +40,6 @@
   cursor: pointer;
   color: var(--gray-90);
   border-radius: 0.5rem;
-  transition: background-color 0.2s ease-in-out;
 }
 
 .sidebar-nav ul li:hover {
@@ -113,7 +112,7 @@
   color: var(--gray-10);
 }
 
-@media (max-width: 900px) {
+@media (min-width: 768px) and (max-width: 900px) {
   .sidebar {
     width: 80px;
     padding: 1rem 0.5rem;
@@ -141,6 +140,25 @@
   .upgrade-box p,
   .upgrade-btn,
   .logout-btn span {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0px;
+    z-index: 1000;
+    width: calc(100% - 1rem);
+    height: calc(100dvh - 100px);
+    margin-right: 0.5rem;
+    border-radius: 0 0 1.5rem 1.5rem;
+  }
+
+  .sidebar.open {
+    top: -100dvh;
+  }
+  .sidebar-logo {
     display: none;
   }
 }

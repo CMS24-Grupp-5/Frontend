@@ -2,9 +2,9 @@ import React from "react";
 import "./Sidebar.css";
 import Symbol from "../../../images/Symbol.svg";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen }) => {
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? `open` : ""}`}>
       <div className="sidebar-logo">
         <img src={Symbol} className="logo" alt="" />
         <span>Ventixe</span>
