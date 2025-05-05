@@ -5,9 +5,11 @@ import AuthLayout from "../partials/layouts/AuthLayout";
 import PortalLayout from "../partials/layouts/PortalLayout";
 import Unauthorized from "../partials/pages/auth/Unauthorized";
 
-const NotFound = lazy(() => import("../partials/pages/NotFound"));
+const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
 
-const SignUp = lazy(() => import("../partials/pages/auth/SignUp"));
+const SignUp = lazy(() => import("../partials/pages/auth/SignUp/SignUp"));
+const Profile = lazy(() => import("../partials/pages/auth/Signup/Profile"));
+
 const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
 
 const UserDashboard = lazy(() => import("../partials/pages/user/Dashboard"));
@@ -20,6 +22,11 @@ const AdminBookings = lazy(() => import("../partials/pages/admin/Bookings"));
 export const routes = [
   {
     children: [{ path: "/", element: <Navigate to="/dashboard" replace /> }],
+  },
+  {
+    layout: AuthLayout,
+    protected: true,
+    children: [{ path: "/profile", element: <Profile /> }],
   },
   {
     layout: AuthLayout,
