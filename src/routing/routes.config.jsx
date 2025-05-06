@@ -8,13 +8,13 @@ import Unauthorized from "../partials/pages/auth/Unauthorized";
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
 
 const SignUp = lazy(() => import("../partials/pages/auth/SignUp/SignUp"));
-const Profile = lazy(() => import("../partials/pages/auth/Signup/Profile"));
+const Profile = lazy(() => import("../partials/pages/auth/SignUp/Profile"));
 
 const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
 
 const UserDashboard = lazy(() => import("../partials/pages/user/Dashboard"));
 const UserBookings = lazy(() => import("../partials/pages/user/Bookings"));
-const EventList = lazy(() => import("../partials/pages/user/Event/EventList"))
+const EventList = lazy(() => import("../partials/pages/user/Event/EventList"));
 
 const AdminDashboard = lazy(() => import("../partials/pages/admin/Dashboard"));
 const AdminBookings = lazy(() => import("../partials/pages/admin/Bookings"));
@@ -42,7 +42,7 @@ export const routes = [
     children: [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/bookings", element: <UserBookings /> },
-      { path: "/events", element: <EventList /> }
+      { path: "/events", element: <EventList /> },
     ],
   },
   {

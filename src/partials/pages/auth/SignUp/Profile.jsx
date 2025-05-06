@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../SignIn/SignIn.css";
 
-const CompleteProfile = () => {
+const Profile = () => {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -92,4 +92,4 @@ const CompleteProfile = () => {
   );
 };
 
-export default CompleteProfile;
+export default Profile;
