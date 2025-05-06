@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../../../contexts/AuthContext";
+import { Spinner } from "../../../Componants/Spinner/spinner";
 import { useNavigate } from "react-router-dom";
 import "./SignIn.css";
 
@@ -88,7 +89,11 @@ const SignIn = () => {
             <div className="formErrorMessage">{passwordError}</div>
           )}
         </div>
-        {loading && <div className="loading">Signing in...</div>}
+        {loading && (
+          <div className="loading">
+            <Spinner />
+          </div>
+        )}
         {error && <div className="errorMessage">{error}</div>}
 
         <button type="submit" className="submitButton" disabled={loading}>

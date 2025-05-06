@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "../../../Componants/Spinner/spinner";
 import "../SignIn/SignIn.css";
 
 const Profile = () => {
@@ -76,13 +77,7 @@ const Profile = () => {
         </div>
 
         {error && <div className="errorMessage">{error}</div>}
-        {loading && (
-          <div className="spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        )}
+        {loading && <Spinner />}
 
         <button type="submit" className="submitButton" disabled={loading}>
           {loading ? "Saving..." : "Save and Continue"}
