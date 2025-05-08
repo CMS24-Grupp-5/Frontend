@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   const signUp = async ({ email, password }) => {
     try {
       const response = await fetch(
-        "https://localhost:7108/api/SignUp/register",
+        "https://signupprovider-e5ggb2gkh6ewazbw.swedencentral-01.azurewebsites.net/api/SignUp/register",
         {
           method: "POST",
           headers: {

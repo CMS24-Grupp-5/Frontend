@@ -18,7 +18,7 @@ const Profile = () => {
 
     try {
       const response = await fetch(
-        "https://localhost:7147/api/profiles/create",
+        "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/create",
         {
           method: "POST",
           headers: {
