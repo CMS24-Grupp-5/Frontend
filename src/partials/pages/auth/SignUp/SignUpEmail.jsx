@@ -54,7 +54,6 @@ const SignUpStepOne = () => {
               <div className="formErrorMessage">{errors.email}</div>
             )}
           </div>
-  
           {generalError && <div className="errorMessage">{generalError}</div>}
           {loading && (
             <div className="spinner">
@@ -63,10 +62,17 @@ const SignUpStepOne = () => {
               <div></div>
             </div>
           )}
-  
           <button type="submit" className="submitButton" disabled={loading}>
             {loading ? "Loading..." : "Next"}
           </button>
+          <div>
+            <p>
+              Already have an account?{" "}
+              <a href="/login" className="dontHaveAccount">
+                Sign In
+              </a>
+            </p>
+          </div>
         </form>
       </div>
     );

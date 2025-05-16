@@ -49,7 +49,7 @@ export const routes = [
   },
   {
     layout: PortalLayout,
-    protected: false, // ändra till true senare
+    protected: true,
     children: [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/bookings", element: <UserBookings /> },
