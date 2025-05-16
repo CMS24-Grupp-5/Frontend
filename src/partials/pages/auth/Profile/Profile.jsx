@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Spinner } from "../../../Componants/Spinner/spinner";
+import { Spinner } from "../../../Componants/Spinner/Spinner";
 import "../SignIn/SignIn.css";
 
 const Profile = () => {
