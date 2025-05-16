@@ -3,11 +3,10 @@ import { useAuth } from "../../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "../SignIn/SignIn.css"; // samma CSS
 
-const SignUpStepOne = () => {
+const SignUpStepThree = () => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -16,9 +15,7 @@ const SignUpStepOne = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(email)) newErrors.email = "Invalid email format.";
     if (password.length < 8)
       newErrors.password = "Password must be at least 8 characters long.";
     if (password !== confirmPassword)
@@ -35,7 +32,7 @@ const SignUpStepOne = () => {
 
     setLoading(true);
     try {
-      await signUp({ email, password });
+      await signUp({ password });
       navigate("/profile");
     } catch (err) {
       setGeneralError(err.message || "Signup failed");
@@ -48,18 +45,6 @@ const SignUpStepOne = () => {
     <div className="signupContainer">
       <h2 className="signupHeader">Sign Up</h2>
       <form onSubmit={handleSubmit} className="formContainer" noValidate>
-        <div className="inputWrapper">
-          <label className="inputLabel">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="inputField"
-          />
-          {errors.email && (
-            <div className="formErrorMessage">{errors.email}</div>
-          )}
-        </div>
 
         <div className="inputWrapper">
           <label className="inputLabel">Password</label>
@@ -104,4 +89,4 @@ const SignUpStepOne = () => {
   );
 };
 
-export default SignUpStepOne;
+export default SignUpStepThree;
