@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "../../../Componants/Spinner/spinner";
-import "../SignIn/SignIn.css"; // samma CSS
+import "../SignIn/SignIn.css";
 
 const SignUpStepOne = () => {
   const { signUp } = useAuth();

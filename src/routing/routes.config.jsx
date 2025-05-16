@@ -8,7 +8,7 @@ import Unauthorized from "../partials/pages/auth/Unauthorized";
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
 
 const SignUp = lazy(() => import("../partials/pages/auth/SignUp/SignUp"));
-const Profile = lazy(() => import("../partials/pages/auth/SignUp/Profile"));
+const Profile = lazy(() => import("../partials/pages/auth/Profile/Profile"));
 
 const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
 
