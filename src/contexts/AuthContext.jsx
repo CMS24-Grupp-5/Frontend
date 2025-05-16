@@ -4,42 +4,115 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem("user") !== null;
+    return localStorage.getItem("auth") !== null;
   });
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-      setIsAuthenticated(true);
-    }
+    //Här validerar vi tokenen som finns i localStorage.
+    //Om tokenen är giltig så sätts isAuthenticated till true annars sätts den till false.
+    const validateToken = async () => {
+      const authData = localStorage.getItem("auth");
+
+      if (!authData) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      const { userId, token } = JSON.parse(authData);
+
+      if (!userId || !token) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=${
+            import.meta.env.VITE_VALIDATE_TOKEN
+          }`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userId: userId,
+              accessToken: token,
+            }),
+          }
+        );
+
+        const result = await response.json();
+
+        if (result.succeeded) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          localStorage.removeItem("auth");
+        }
+      } catch (error) {
+        console.error("Token validation failed:", error);
+        setIsAuthenticated(false);
+        localStorage.removeItem("auth");
+      }
+    };
+
+    validateToken();
   }, []);
+
   //När funktionen körs så kommer det posta till url email och password finns det i databasen loggas anväder in.
   //När användaren loggas in så sparas user objektet i localStorage och isAuthenticated sätts till true.
   //När användaren loggas ut så tas user objektet bort från localStorage och isAuthenticated sätts till false.
   const signIn = async ({ email, password, isPersistent }) => {
     try {
-      const response = await fetch("https://localhost:7063/api/login/Login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://loginhandler-d9b7enhabmbud0em.swedencentral-01.azurewebsites.net/api/login/Login",
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Login failed");
       }
 
       const data = await response.json();
+
+      // Här skapar vi tokenen när en använder loggar in och sparar userId och token i localStorage
+      // och sätter isAuthenticated till true.
+      const tokenResponse = await fetch(
+        `https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/GenerateToken?code=${
+          import.meta.env.VITE_GENERATE_TOKEN
+        }`,
+        {
+          method: "POST",
+          body: JSON.stringify({ userId: data.userId }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const tokenData = await tokenResponse.json();
+
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          userId: data.userId,
+          token: tokenData.accessToken,
+        })
+      );
+
       setUser(data.user);
-      localStorage.setItem("user", JSON.stringify(data));
-      if (localStorage.getItem("user")) {
+      if (localStorage.getItem("auth")) {
         setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Sign-in failed:", error);
-      throw error;
     }
   };
 
