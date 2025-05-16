@@ -7,7 +7,16 @@ import Unauthorized from "../partials/pages/auth/Unauthorized";
 
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
 
-const SignUp = lazy(() => import("../partials/pages/auth/SignUp/SignUp"));
+const SignUpPassword = lazy(() =>
+  import("../partials/pages/auth/SignUp/SignUpPassword")
+);
+const SignUpEmail = lazy(() =>
+  import("../partials/pages/auth/SignUp/SignUpEmail")
+);
+const SignUpValidate = lazy(() =>
+  import("../partials/pages/auth/SignUp/SignUpValidate")
+);
+
 const Profile = lazy(() => import("../partials/pages/auth/Profile/Profile"));
 
 const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
@@ -31,7 +40,9 @@ export const routes = [
   {
     layout: AuthLayout,
     children: [
-      { path: "/signup", element: <SignUp /> },
+      { path: "/signuppassword", element: <SignUpPassword /> },
+      { path: "/signup", element: <SignUpEmail /> },
+      { path: "/signupvalidate", element: <SignUpValidate /> },
       { path: "/login", element: <SignIn /> },
       { path: "/denied", element: <Unauthorized /> },
     ],
