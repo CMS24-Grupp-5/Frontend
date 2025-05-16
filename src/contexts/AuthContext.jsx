@@ -19,16 +19,13 @@ export const AuthProvider = ({ children }) => {
   //När användaren loggas ut så tas user objektet bort från localStorage och isAuthenticated sätts till false.
   const signIn = async ({ email, password, isPersistent }) => {
     try {
-      const response = await fetch(
-        "https://userloginapi-c8dvg7h3hwhmaahn.swedencentral-01.azurewebsites.net/api/login",
-        {
-          method: "POST",
-          body: JSON.stringify({ email, password }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch("https://localhost:7063/api/login/Login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Login failed");
@@ -49,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   const signUp = async ({ email, password }) => {
     try {
       const response = await fetch(
-        "https://localhost:7108/api/SignUp/register",
+        "https://signupprovider-e5ggb2gkh6ewazbw.swedencentral-01.azurewebsites.net/api/SignUp/register",
         {
           method: "POST",
           headers: {

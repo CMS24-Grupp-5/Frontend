@@ -31,7 +31,7 @@ const Header = ({ onMenuClick }) => {
           </button>
           <div className="user-profile">
             <div className="profile-image">
-              <i class="fa-solid fa-user"></i>
+              <i className="fa-solid fa-user"></i>
             </div>
 
             <div className="profile-info">

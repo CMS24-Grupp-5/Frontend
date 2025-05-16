@@ -7,10 +7,17 @@ import Unauthorized from "../partials/pages/auth/Unauthorized";
 
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
 
-const SignUpPassword = lazy(() => import("../partials/pages/auth/SignUp/SignUpPassword"));
-const SignUpEmail = lazy(() => import("../partials/pages/auth/SignUp/SignUpEmail"));
-const SignUpValidate = lazy(() => import("../partials/pages/auth/SignUp/SignUpValidate"));
-const Profile = lazy(() => import("../partials/pages/auth/SignUp/Profile"));
+const SignUpPassword = lazy(() =>
+  import("../partials/pages/auth/SignUp/SignUpPassword")
+);
+const SignUpEmail = lazy(() =>
+  import("../partials/pages/auth/SignUp/SignUpEmail")
+);
+const SignUpValidate = lazy(() =>
+  import("../partials/pages/auth/SignUp/SignUpValidate")
+);
+
+const Profile = lazy(() => import("../partials/pages/auth/Profile/Profile"));
 
 const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
 
@@ -34,7 +41,7 @@ export const routes = [
     layout: AuthLayout,
     children: [
       { path: "/signuppassword", element: <SignUpPassword /> },
-      { path: "/signupemail", element: <SignUpEmail /> },
+      { path: "/signup", element: <SignUpEmail /> },
       { path: "/signupvalidate", element: <SignUpValidate /> },
       { path: "/login", element: <SignIn /> },
       { path: "/denied", element: <Unauthorized /> },
@@ -47,7 +54,6 @@ export const routes = [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/bookings", element: <UserBookings /> },
       { path: "/events", element: <EventList /> },
-      
     ],
   },
   {

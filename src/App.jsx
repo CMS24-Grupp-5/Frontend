@@ -1,19 +1,11 @@
 import { Suspense } from "react";
 import "./App.css";
 import RouteRenderer from "./routing/RouteRenderer";
+import { Spinner } from "./partials/Componants/Spinner/Spinner";
 
 function App() {
   return (
-    <Suspense
-      fallback={
-        <div className="spinner">
-          {" "}
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      }
-    >
+    <Suspense fallback={<Spinner />}>
       <RouteRenderer />
     </Suspense>
   );

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "../SignIn/SignIn.css"; // samma CSS
+import { Spinner } from "../../../Componants/Spinner/Spinner";
+import "../SignIn/SignIn.css";
 
 const SignUpStepThree = () => {
   const { signUp } = useAuth();
@@ -73,13 +74,7 @@ const SignUpStepThree = () => {
         </div>
 
         {generalError && <div className="errorMessage">{generalError}</div>}
-        {loading && (
-          <div className="spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        )}
+        {loading && <Spinner />}
 
         <button type="submit" className="submitButton" disabled={loading}>
           {loading ? "Loading..." : "Next"}

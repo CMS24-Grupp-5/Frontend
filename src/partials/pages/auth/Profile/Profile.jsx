@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "../../../Componants/Spinner/Spinner";
 import "../SignIn/SignIn.css";
 
 const Profile = () => {
@@ -17,7 +18,7 @@ const Profile = () => {
 
     try {
       const response = await fetch(
-        "https://localhost:7147/api/profiles/create",
+        "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/create",
         {
           method: "POST",
           headers: {
@@ -76,13 +77,7 @@ const Profile = () => {
         </div>
 
         {error && <div className="errorMessage">{error}</div>}
-        {loading && (
-          <div className="spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        )}
+        {loading && <Spinner />}
 
         <button type="submit" className="submitButton" disabled={loading}>
           {loading ? "Saving..." : "Save and Continue"}
