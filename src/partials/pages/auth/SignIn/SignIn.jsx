@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../../../contexts/AuthContext";
-import { Spinner } from "../../../Componants/Spinner/spinner";
+import { Spinner } from "../../../Componants/Spinner/Spinner";
 import { useNavigate } from "react-router-dom";
 import "./SignIn.css";
 
