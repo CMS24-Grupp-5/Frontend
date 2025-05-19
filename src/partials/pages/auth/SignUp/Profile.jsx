@@ -10,6 +10,16 @@ const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const userId = localStorage.getItem("userId");
+  console.log("UserId from localStorage:", localStorage.getItem("user"));
+  const payload = {
+    FirstName: firstName,
+    LastName: lastName,
+    PhoneNumber: phoneNumber,
+    Id: userId,
+  };
+
+  console.log("Payload being sent:", JSON.stringify(payload));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +28,7 @@ const Profile = () => {
 
     try {
       const response = await fetch(
-        "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/create",
+        "https://localhost:7147/api/profiles/create",
         {
           method: "POST",
           headers: {
@@ -28,6 +38,7 @@ const Profile = () => {
             FirstName: firstName,
             LastName: lastName,
             PhoneNumber: phoneNumber,
+            Id: userId,
           }),
         }
       );

@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
         ? await response.json()
         : { message: await response.text() };
 
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("userId", JSON.stringify(data.userId));
       setUser(data.user ?? null);
       setIsAuthenticated(true);
 
