@@ -32,7 +32,7 @@ const EventList = () => {
       params.append('order', order)
     }
 
-    fetch(`http://localhost:5014/api/events?${params.toString()}`) // lokal, byt URL för remote vid deployment.
+   fetch(`https://eventviewprovider.azurewebsites.net/api/events?${params.toString()}`)
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(err => console.error("Fel vid hämtning:", err))
