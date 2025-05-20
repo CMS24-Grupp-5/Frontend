@@ -4,11 +4,12 @@ import { Navigate } from "react-router-dom";
 import AuthLayout from "../partials/layouts/AuthLayout";
 import PortalLayout from "../partials/layouts/PortalLayout";
 import Unauthorized from "../partials/pages/auth/Unauthorized";
+import { ProfileProvider } from "../contexts/ProfileContext";
 
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
 
 const SignUp = lazy(() => import("../partials/pages/auth/SignUp/SignUp"));
-const Profile = lazy(() => import("../partials/pages/auth/SignUp/Profile"));
+const Profile = lazy(() => import("../partials/pages/auth/Profile/Profile"));
 
 const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
 
@@ -26,7 +27,16 @@ export const routes = [
   {
     layout: AuthLayout,
     protected: true,
-    children: [{ path: "/profile", element: <Profile /> }],
+    children: [
+      {
+        path: "/profile",
+        element: (
+          <ProfileProvider>
+            <Profile />
+          </ProfileProvider>
+        ),
+      },
+    ],
   },
   {
     layout: AuthLayout,
