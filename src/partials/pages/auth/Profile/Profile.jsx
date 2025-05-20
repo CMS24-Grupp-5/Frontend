@@ -16,8 +16,8 @@ const Profile = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const userId = localStorage.getItem("userId");
-
+  const authData = localStorage.getItem("auth");
+  const { userId } = JSON.parse(authData);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };

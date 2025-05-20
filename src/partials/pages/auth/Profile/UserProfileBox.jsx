@@ -7,7 +7,9 @@ const UserProfileBox = () => {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(profile || {});
   const [saving, setSaving] = useState(false);
-  console.log(localStorage.getItem("userId"));
+  const authData = localStorage.getItem("auth");
+
+  const { userId } = JSON.parse(authData);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,7 +21,7 @@ const UserProfileBox = () => {
       FirstName: form.firstName,
       LastName: form.lastName,
       PhoneNumber: form.phoneNumber,
-      Id: localStorage.getItem("userId"),
+      Id: userId,
     };
 
     try {
