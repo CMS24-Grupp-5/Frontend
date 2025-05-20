@@ -28,10 +28,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await fetch(
-          `https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=${
-            import.meta.env.VITE_VALIDATE_TOKEN
-          }`,
+        const response = await fetch("https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=fhOSbniVnX5wGk_GvC5bvAzF4lnhf3B7-W9AnFct2PIJAzFu9kC0DA==",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -84,10 +81,7 @@ export const AuthProvider = ({ children }) => {
 
       // Här skapar vi tokenen när en använder loggar in och sparar userId och token i localStorage
       // och sätter isAuthenticated till true.
-      const tokenResponse = await fetch(
-        `https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/GenerateToken?code=${
-          process.env.VITE_GENERATE_TOKEN
-        }`,
+      const tokenResponse = await fetch("https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/GenerateToken?code=TcdLVOTzog57NqJh_XQJSTfD3qYdBB6wlpv3ekxwz9AiAzFubeO4gQ==",
         {
           method: "POST",
           body: JSON.stringify({ userId: data.userId }),
