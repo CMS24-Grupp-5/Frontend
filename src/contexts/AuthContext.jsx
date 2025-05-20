@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       // och sätter isAuthenticated till true.
       const tokenResponse = await fetch(
         `https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/GenerateToken?code=${
-          import.meta.env.VITE_GENERATE_TOKEN
+          process.env.VITE_GENERATE_TOKEN
         }`,
         {
           method: "POST",
