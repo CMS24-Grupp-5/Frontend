@@ -83,6 +83,25 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json();
 
+      const RoleResponse = await fetch(
+        `https://accountserviceprovider-g5gnanhufngbezgt.swedencentral-01.azurewebsites.net/api/Roles/getroles?id=${data.userId}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (!RoleResponse.ok) {
+        throw new Error("Failed to fetch role");
+      }
+
+      const roleData = await RoleResponse.json();
+      localStorage.setItem("role", JSON.stringify({ role: roleData }));
+      if (roleData.role === "Admin") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+
       // Här skapar vi tokenen när en använder loggar in och sparar userId och token i localStorage
       // och sätter isAuthenticated till true.
       const tokenResponse = await fetch(
@@ -132,8 +151,6 @@ export const AuthProvider = ({ children }) => {
         }
       );
 
-      await signIn({ email, password });
-
       const contentType = response.headers.get("content-type");
 
       if (!response.ok) {
@@ -147,10 +164,12 @@ export const AuthProvider = ({ children }) => {
         ? await response.json()
         : { message: await response.text() };
 
-      // localStorage.setItem("user", JSON.stringify(data));
       setUser(data.user ?? null);
       setIsAuthenticated(true);
-      signIn(email, password);
+
+      // 👉 Korrekt: anropa signIn **efter** att kontot skapats
+      await signIn({ email, password });
+
       return data;
     } catch (error) {
       console.error("Sign-up failed:", error);

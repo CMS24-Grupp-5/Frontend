@@ -4,23 +4,38 @@ export const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);
+  const loadProfile = async () => {
+    const auth = localStorage.getItem("auth");
+    if (!auth) return;
+
+    const { userId } = JSON.parse(auth);
+
+    try {
+      const response = await fetch(
+        "https://localhost:7147/api/Profiles/GetById",
+        
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userId), // servern tar emot en string, inte ett objekt
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch profile");
+
+      const data = await response.json();
+      setProfile(data);
+    } catch (err) {
+      console.error("Profile fetch failed:", err);
+    }
+  };
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) return;
-
-    fetch("https://localhost:7147/api/Profiles/GetById", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userId),
-    })
-      .then((res) => res.json())
-      .then((data) => setProfile(data))
-      .catch((err) => console.error("Profile fetch failed:", err));
+    loadProfile();
   }, []);
 
   return (
-    <ProfileContext.Provider value={{ profile, setProfile }}>
+    <ProfileContext.Provider value={{ profile, setProfile, loadProfile }}>
       {children}
     </ProfileContext.Provider>
   );

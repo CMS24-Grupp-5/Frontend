@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../../../../contexts/ProfileContext";
 import { Spinner } from "../../../Componants/Spinner/Spinner";
-import ProfileFormModal from "../Profile/ProfileFormModal";
+import ProfileFormModal from "./ProfileFormModal";
 import "../SignIn/SignIn.css";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { setProfile } = useProfile();
+  const { profile, setProfile } = useProfile();
 
   const [form, setForm] = useState({
     firstName: "",
@@ -16,8 +16,20 @@ const Profile = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const authData = localStorage.getItem("auth");
-  const { userId } = JSON.parse(authData);
+
+  const { userId } = JSON.parse(localStorage.getItem("auth") || "{}");
+
+  // 🔄 Ladda formulär med befintlig profil om den finns
+  useEffect(() => {
+    if (profile) {
+      setForm({
+        firstName: profile.firstName || "",
+        lastName: profile.lastName || "",
+        phoneNumber: profile.phoneNumber || "",
+      });
+    }
+  }, [profile]);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -34,20 +46,21 @@ const Profile = () => {
     };
 
     try {
-      const response = await fetch(
-        "https://localhost:7147/api/profiles/create",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      const endpoint = profile
+        ? "https://localhost:7147/api/profiles/update"
+        : "https://localhost:7147/api/profiles/create";
 
-      if (!response.ok) throw new Error("Profile completion failed");
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error("Kunde inte spara profilen");
 
       const savedProfile = await response.json();
-      setProfile(savedProfile);
-      navigate("/dashboard");
+      setProfile(savedProfile); // 🔁 Uppdatera direkt i context
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       setError(err.message || "Något gick fel");
     } finally {
@@ -57,7 +70,9 @@ const Profile = () => {
 
   return (
     <div className="signupContainer">
-      <h2 className="signupHeader">Complete Profile</h2>
+      <h2 className="signupHeader">
+        {profile ? "Redigera Profil" : "Complete Profile"}
+      </h2>
       {loading && <Spinner />}
       <ProfileFormModal
         form={form}
