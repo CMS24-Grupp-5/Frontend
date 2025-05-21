@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../../../../contexts/ProfileContext";
@@ -65,7 +64,6 @@ const Profile = () => {
       navigate("/dashboard", { replace: true });
     } catch (err) {
       setError(err.message || "Något gick fel");
-
     } finally {
       setLoading(false);
     }
@@ -76,7 +74,6 @@ const Profile = () => {
       <h2 className="signupHeader">
         {profile ? "Redigera Profil" : "Complete Profile"}
       </h2>
-      {loading && <Spinner />}
       <ProfileFormModal
         form={form}
         onChange={handleChange}
@@ -85,7 +82,7 @@ const Profile = () => {
         isEmbedded={true}
         error={error}
       />
-
+      {loading && <Spinner />}
     </div>
   );
 };

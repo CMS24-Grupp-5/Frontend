@@ -27,7 +27,7 @@ const Header = ({ onMenuClick }) => {
 
         <div className="header-title">
           <h1>Dashboard</h1>
-          <p>Hej, välkommen tillbaka!</p>
+          <p>Hej {firstName}, välkommen tillbaka!</p>
         </div>
 
         <div className="header-icons">
