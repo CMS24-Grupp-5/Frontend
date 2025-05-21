@@ -48,8 +48,8 @@ const Profile = () => {
 
     try {
       const endpoint = profile
-        ? "https://localhost:7147/api/profiles/update"
-        : "https://localhost:7147/api/profiles/create";
+        ? "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/update"
+        : "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/create";
 
       const response = await fetch(endpoint, {
         method: "POST",

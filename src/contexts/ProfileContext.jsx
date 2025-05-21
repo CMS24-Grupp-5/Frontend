@@ -12,8 +12,8 @@ export const ProfileProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        "https://localhost:7147/api/Profiles/GetById",
-        
+        "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/Profiles/GetById",
+
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
