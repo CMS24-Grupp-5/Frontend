@@ -1,12 +1,15 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../../../../contexts/ProfileContext";
 import { Spinner } from "../../../Componants/Spinner/Spinner";
 import ProfileFormModal from "./ProfileFormModal";
+
 import "../SignIn/SignIn.css";
 
 const Profile = () => {
   const navigate = useNavigate();
+
   const { profile, setProfile } = useProfile();
 
   const [form, setForm] = useState({
@@ -19,7 +22,6 @@ const Profile = () => {
 
   const { userId } = JSON.parse(localStorage.getItem("auth") || "{}");
 
-  // 🔄 Ladda formulär med befintlig profil om den finns
   useEffect(() => {
     if (profile) {
       setForm({
@@ -59,10 +61,11 @@ const Profile = () => {
       if (!response.ok) throw new Error("Kunde inte spara profilen");
 
       const savedProfile = await response.json();
-      setProfile(savedProfile); // 🔁 Uppdatera direkt i context
+      setProfile(savedProfile); //
       navigate("/dashboard", { replace: true });
     } catch (err) {
       setError(err.message || "Något gick fel");
+
     } finally {
       setLoading(false);
     }
@@ -82,6 +85,7 @@ const Profile = () => {
         isEmbedded={true}
         error={error}
       />
+
     </div>
   );
 };

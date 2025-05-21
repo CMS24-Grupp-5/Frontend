@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useAuth } from "../../../../contexts/AuthContext";
-import { Spinner } from "../../../Componants/Spinner/spinner";
+import { Spinner } from "../../../Componants/Spinner/Spinner";
 import { useNavigate } from "react-router-dom";
 import "./SignIn.css";
 
 const SignIn = () => {
   const { signIn } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test78@gmail.com");
+  const [password, setPassword] = useState("BytMig123.");
   const [error, setError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -99,6 +99,14 @@ const SignIn = () => {
         <button type="submit" className="submitButton" disabled={loading}>
           {loading ? "Loading..." : "Sign In"}
         </button>
+        <div>
+          <p>
+            Don't have an account?{" "}
+            <a href="/signup" className="dontHaveAccount">
+              Sign Up
+            </a>
+          </p>
+        </div>
       </form>
     </div>
   );
