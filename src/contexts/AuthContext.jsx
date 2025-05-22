@@ -1,3 +1,5 @@
+/** @format */
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
@@ -6,7 +8,19 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem("auth") !== null;
   });
-  const [isAdmin, setIsAdmin] = useState(false);
+
+  //Chatgpt - sätt isAdmin beroende på om rollen finns i localstorage-objektet
+  const [isAdmin, setIsAdmin] = useState(() => {
+    const auth = localStorage.getItem("auth");
+    if (!auth) return false;
+
+    try {
+      const parsed = JSON.parse(auth);
+      return Array.isArray(parsed.roles) && parsed.roles.includes("admin");
+    } catch {
+      return false;
+    }
+  });
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -28,7 +42,8 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await fetch("https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=fhOSbniVnX5wGk_GvC5bvAzF4lnhf3B7-W9AnFct2PIJAzFu9kC0DA==",
+        const response = await fetch(
+          "https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=fhOSbniVnX5wGk_GvC5bvAzF4lnhf3B7-W9AnFct2PIJAzFu9kC0DA==",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -62,16 +77,13 @@ export const AuthProvider = ({ children }) => {
   //När användaren loggas ut så tas user objektet bort från localStorage och isAuthenticated sätts till false.
   const signIn = async ({ email, password, isPersistent }) => {
     try {
-      const response = await fetch(
-        "https://loginhandler-d9b7enhabmbud0em.swedencentral-01.azurewebsites.net/api/login/Login",
-        {
-          method: "POST",
-          body: JSON.stringify({ email, password }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch("https://loginhandler-d9b7enhabmbud0em.swedencentral-01.azurewebsites.net/api/login/Login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Login failed");
@@ -81,7 +93,8 @@ export const AuthProvider = ({ children }) => {
 
       // Här skapar vi tokenen när en använder loggar in och sparar userId och token i localStorage
       // och sätter isAuthenticated till true.
-      const tokenResponse = await fetch("https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/GenerateToken?code=TcdLVOTzog57NqJh_XQJSTfD3qYdBB6wlpv3ekxwz9AiAzFubeO4gQ==",
+      const tokenResponse = await fetch(
+        "https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/GenerateToken?code=TcdLVOTzog57NqJh_XQJSTfD3qYdBB6wlpv3ekxwz9AiAzFubeO4gQ==",
         {
           method: "POST",
           body: JSON.stringify({ userId: data.userId }),
@@ -92,12 +105,24 @@ export const AuthProvider = ({ children }) => {
       );
 
       const tokenData = await tokenResponse.json();
+      let roles;
+
+      if (tokenData) {
+        const rolesResponse = await fetch(
+          "https://accountserviceprovider-g5gnanhufngbezgt.swedencentral-01.azurewebsites.net/api/Roles/getroles?id=24744e7c-9281-4af5-914b-3defdcd7cfd2"
+        );
+        roles = await rolesResponse.json();
+        if (roles.includes("admin")) {
+          setIsAdmin(true);
+        }
+      }
 
       localStorage.setItem(
         "auth",
         JSON.stringify({
           userId: data.userId,
           token: tokenData.accessToken,
+          roles: roles,
         })
       );
 
@@ -112,32 +137,25 @@ export const AuthProvider = ({ children }) => {
 
   const signUp = async ({ email, password }) => {
     try {
-      const response = await fetch(
-        "https://signupprovider-e5ggb2gkh6ewazbw.swedencentral-01.azurewebsites.net/api/SignUp/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        }
-      );
+      const response = await fetch("https://signupprovider-e5ggb2gkh6ewazbw.swedencentral-01.azurewebsites.net/api/SignUp/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
       const contentType = response.headers.get("content-type");
 
       if (!response.ok) {
-        const errorData = contentType?.includes("application/json")
-          ? await response.json()
-          : await response.text();
+        const errorData = contentType?.includes("application/json") ? await response.json() : await response.text();
         throw new Error(errorData.message || errorData || "Signup failed");
       }
 
-      const data = contentType?.includes("application/json")
-        ? await response.json()
-        : { message: await response.text() };
+      const data = contentType?.includes("application/json") ? await response.json() : { message: await response.text() };
 
       localStorage.setItem("user", JSON.stringify(data));
       setUser(data.user ?? null);
@@ -150,13 +168,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, isAdmin, user, signUp, signIn }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ isAuthenticated, isAdmin, user, signUp, signIn }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
