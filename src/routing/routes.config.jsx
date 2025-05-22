@@ -1,3 +1,5 @@
+/** @format */
+
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -7,15 +9,9 @@ import Unauthorized from "../partials/pages/auth/Unauthorized";
 
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
 
-const SignUpPassword = lazy(() =>
-  import("../partials/pages/auth/SignUp/SignUpPassword")
-);
-const SignUpEmail = lazy(() =>
-  import("../partials/pages/auth/SignUp/SignUpEmail")
-);
-const SignUpValidate = lazy(() =>
-  import("../partials/pages/auth/SignUp/SignUpValidate")
-);
+const SignUpPassword = lazy(() => import("../partials/pages/auth/SignUp/SignUpPassword"));
+const SignUpEmail = lazy(() => import("../partials/pages/auth/SignUp/SignUpEmail"));
+const SignUpValidate = lazy(() => import("../partials/pages/auth/SignUp/SignUpValidate"));
 
 const Profile = lazy(() => import("../partials/pages/auth/Profile/Profile"));
 
@@ -24,6 +20,7 @@ const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
 const UserDashboard = lazy(() => import("../partials/pages/user/Dashboard"));
 const UserBookings = lazy(() => import("../partials/pages/user/Bookings"));
 const EventList = lazy(() => import("../partials/pages/user/Event/EventList"));
+const EventDetails = lazy(() => import("../partials/pages/user/Event/EventDetails"));
 
 const AdminDashboard = lazy(() => import("../partials/pages/admin/Dashboard"));
 const AdminBookings = lazy(() => import("../partials/pages/admin/Bookings"));
@@ -54,6 +51,7 @@ export const routes = [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/bookings", element: <UserBookings /> },
       { path: "/events", element: <EventList /> },
+      { path: "/events/:id", element: <EventDetails /> },
     ],
   },
   {
