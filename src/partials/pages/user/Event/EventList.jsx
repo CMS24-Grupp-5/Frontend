@@ -47,7 +47,7 @@ const handleBook = (eventId) => {
     return;
   }
 
-  fetch("https://localhost:7093/api/Booking", {
+  fetch("https://bookeventprovider.azurewebsites.net/api/Booking", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
