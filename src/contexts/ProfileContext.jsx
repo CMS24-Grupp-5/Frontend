@@ -13,7 +13,7 @@ export const ProfileProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        `https://localhost:7147/api/Profiles/${userId}`,
+        `https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/Profiles/${userId}`,
         {
           method: "GET",
           headers: {
