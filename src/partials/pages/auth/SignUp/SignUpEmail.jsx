@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../SignIn/SignIn.css"; // samma CSS
 
 const SignUpStepOne = () => {
-    const { signUp } = useAuth();
+    const { signUpEmail } = useAuth();
     const navigate = useNavigate();
   
     const [email, setEmail] = useState("");
@@ -28,11 +28,14 @@ const SignUpStepOne = () => {
       if (!validateForm()) return;
   
       setLoading(true);
+      
       try {
-        await signUp({ email });
+        await signUpEmail({ email });
         navigate("/signupvalidate");
+
       } catch (err) {
         setGeneralError(err.message || "Signup failed");
+      
       } finally {
         setLoading(false);
       }

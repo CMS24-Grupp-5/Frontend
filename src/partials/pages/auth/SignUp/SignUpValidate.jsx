@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../SignIn/SignIn.css"; // samma CSS
 
 const SignUpStepOne = () => {
-    const { signUp } = useAuth();
+    const { signUpValidate } = useAuth();
     const navigate = useNavigate();
   
     const [inputOne, setInputOne] = useState("");
@@ -19,10 +19,12 @@ const SignUpStepOne = () => {
     const [loading, setLoading] = useState(false);
   
     useEffect(() => {
-        var inputField = document.getElementById("0");
-        inputField.select();
+      const timeout = setTimeout(() => {
+        const inputField = document.getElementById("0");
+        inputField?.select();
+      }, 100);
+      return () => clearTimeout(timeout);
     }, []);
-
 
     const validateForm = () => {
         const newErrors = {};
@@ -35,7 +37,6 @@ const SignUpStepOne = () => {
         return Object.keys(newErrors).length === 0;
         };
 
-        
     const handleInput = (setDigit) => (e) => {
         const numberRegex = /^[0-9]+$/;
         const value = e.target.value;
@@ -43,8 +44,10 @@ const SignUpStepOne = () => {
 
         if (numberRegex.test(value)) {
             setDigit(value)
+            
             const nextInputId = parseInt(inputId) + 1;
             const nextInput = document.getElementById(nextInputId.toString());
+            
             if (nextInput) {
                 nextInput.select();
             }
@@ -54,16 +57,35 @@ const SignUpStepOne = () => {
         }
     };
 
+    const handleKeyDown = (e) => {
+      const inputId = parseInt(e.target.id);
+      
+      if (e.key === "Backspace" && !e.target.value && inputId > 0) {
+        const previousInput = document.getElementById((inputId - 1).toString());
+        
+        if (previousInput) {
+          previousInput.select();
+      }
+      }
+    };
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       setGeneralError("");
-      if (!validateForm()) return;
-      console.log(validateForm())
-
+      
+      const isValid = validateForm();
+      if (!isValid) return;
+      
       setLoading(true);
       try {
-        await signUp({ email });
+        const code = inputOne + inputTwo + inputThree + inputFour + inputFive + inputSix;
+        let result = await signUpValidate({ code });
+     
+        if(!result || result === false){
+            setGeneralError("Invalid or expired verification code");
+            return;
+        }
+        
         navigate("/signuppassword");
       } catch (err) {
         setGeneralError(err.message || "Signup failed");
@@ -84,6 +106,7 @@ const SignUpStepOne = () => {
               onChange={handleInput(setInputOne)}
               className="validationInputField"
               maxLength={1}
+              onKeyDown={handleKeyDown}
               id="0"
             />
 
@@ -93,6 +116,7 @@ const SignUpStepOne = () => {
               onChange={handleInput(setInputTwo)}
               className="validationInputField"
               maxLength={1}
+              onKeyDown={handleKeyDown}
               id="1"
             /> 
 
@@ -102,6 +126,7 @@ const SignUpStepOne = () => {
               onChange={handleInput(setInputThree)}
               className="validationInputField"
               maxLength={1}
+              onKeyDown={handleKeyDown}
               id="2"
             />
 
@@ -110,6 +135,7 @@ const SignUpStepOne = () => {
               value={inputFour}
               onChange={handleInput(setInputFour)}
               className="validationInputField"
+              onKeyDown={handleKeyDown}
               maxLength={1}
               id="3"
             />
@@ -118,6 +144,7 @@ const SignUpStepOne = () => {
               type="text"
               value={inputFive}
               onChange={handleInput(setInputFive)}
+              onKeyDown={handleKeyDown}
               className="validationInputField"
               maxLength={1}
               id="4"
@@ -127,6 +154,7 @@ const SignUpStepOne = () => {
               type="text"
               value={inputSix}
               onChange={handleInput(setInputSix)}
+              onKeyDown={handleKeyDown}
               className="validationInputField"
               maxLength={1}
               id="5"
