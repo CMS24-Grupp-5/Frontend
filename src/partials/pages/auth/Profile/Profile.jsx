@@ -43,24 +43,28 @@ const Profile = () => {
       FirstName: form.firstName,
       LastName: form.lastName,
       PhoneNumber: form.phoneNumber,
-      Id: userId,
+      UserId: userId,
     };
 
     try {
       const endpoint = profile
-        ? "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/update"
-        : "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/create";
+        ? "https://localhost:7147/api/profiles/update"
+        : "https://localhost:7147/api/profiles/create";
 
       const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST", // eller "PUT" om din backend kräver det
+        headers: {
+          "x-api-key":
+            "IntcInVzZXJJZFwiOlwiMDQ2ZDFlMWItY2VlOC00NGE4LWEzYjUtYTgyNmE5Y2NjMTVjXCJ9Ig==",
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) throw new Error("Kunde inte spara profilen");
 
       const savedProfile = await response.json();
-      setProfile(savedProfile); //
+      setProfile(savedProfile);
       navigate("/dashboard", { replace: true });
     } catch (err) {
       setError(err.message || "Något gick fel");

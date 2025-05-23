@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-
-        const response = await fetch("https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=fhOSbniVnX5wGk_GvC5bvAzF4lnhf3B7-W9AnFct2PIJAzFu9kC0DA==",
+        const response = await fetch(
+          "https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=fhOSbniVnX5wGk_GvC5bvAzF4lnhf3B7-W9AnFct2PIJAzFu9kC0DA==",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -82,7 +82,6 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-
 
       const RoleResponse = await fetch(
         `https://accountserviceprovider-g5gnanhufngbezgt.swedencentral-01.azurewebsites.net/api/Roles/getroles?id=${data.userId}`,

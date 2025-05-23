@@ -4,6 +4,7 @@ export const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);
+
   const loadProfile = async () => {
     const auth = localStorage.getItem("auth");
     if (!auth) return;
@@ -12,12 +13,13 @@ export const ProfileProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/Profiles/GetById",
-
+        `https://localhost:7147/api/Profiles/${userId}`,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userId), // servern tar emot en string, inte ett objekt
+          method: "GET",
+          headers: {
+            "x-api-key":
+              "IntcInVzZXJJZFwiOlwiMDQ2ZDFlMWItY2VlOC00NGE4LWEzYjUtYTgyNmE5Y2NjMTVjXCJ9Ig==",
+          },
         }
       );
 
