@@ -20,7 +20,7 @@ const MyBookings = () => {
       return;
     }
 
-    fetch(`https://localhost:7093/api/Booking/by-user?userId=${userId}`)
+    fetch(`https://bookeventprovider.azurewebsites.net/api/booking/by-user?userId=${userId}`)
       .then(res => res.json())
       .then(data => setBookings(data))
       .catch(err => {
@@ -42,7 +42,7 @@ const MyBookings = () => {
   const getEventInfo = (eventId) => events.find(e => e.id === eventId);
 
   const handleCancel = (bookingId) => {
-    fetch(`https://localhost:7093/api/Booking/${bookingId}`, {
+    fetch(`https://bookeventprovider.azurewebsites.net/api/booking/${bookingId}`, {
       method: 'DELETE'
     })
       .then(res => {
