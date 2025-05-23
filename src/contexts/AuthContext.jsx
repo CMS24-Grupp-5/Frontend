@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   });
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(null);
+  
 
   const navigate = useNavigate();
 
@@ -136,6 +137,69 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const signUpEmail = async ({ email }) => {
+    try{
+      
+      const response = await fetch(
+        "https://ventixe-functions.azurewebsites.net/api/HandleEmailAddress?code=qMjAo7b3R3kYNeGXLEXWZB0mwQrfED-N7Q9IUX2G2zPqAzFuVRRaXw==",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: (email),
+        }
+      );
+
+      const contentType = response.headers.get("content-type");
+
+      if (!response.ok) {
+        const errorData = contentType?.includes("application/json")
+          ? await response.json()
+          : await response.text();
+        throw new Error(errorData.message || errorData || "Signup failed");
+      }
+
+      localStorage.setItem("email", JSON.stringify(email));
+
+    } catch (error) {
+      console.error("Sign-up failed:", error);
+      throw error;
+    }
+  };
+
+
+  const signUpValidate = async ({ code }) => {
+  try {
+    const response = await fetch(
+       "https://ventixe-functions.azurewebsites.net/api/ValidateVerificationCode?code=iomPeQU2joHw9X5xdcpCOK4Rp97qYeMDHKvWS261NoIJAzFuCb3p5g==",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code
+        }),
+      }
+    );
+
+    const contentType = response.headers.get("content-type");
+    
+    if (!response.ok) {
+      const errorData = contentType?.includes("application/json")
+        ? await response.json()
+        : await response.text();
+      throw new Error(errorData.message || errorData || "Verify email failed");
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Sign-up failed:", error);
+    return false;
+  }
+};
+
   const signUp = async ({ email, password }) => {
     try {
       const response = await fetch(
@@ -180,7 +244,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, isAdmin, user, signUp, signIn }}
+      value={{ isAuthenticated, isAdmin, user, signUpEmail, signUpValidate, signUp, signIn }}
     >
       {children}
     </AuthContext.Provider>

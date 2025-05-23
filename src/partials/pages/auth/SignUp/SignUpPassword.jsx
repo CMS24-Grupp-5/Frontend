@@ -33,8 +33,11 @@ const SignUpStepThree = () => {
 
     setLoading(true);
     try {
-      await signUp({ password });
-      navigate("/profile");
+    
+    let email = localStorage.getItem("email");
+    signUp({ email, password })
+    
+    navigate("/profile");
     } catch (err) {
       setGeneralError(err.message || "Signup failed");
     } finally {
