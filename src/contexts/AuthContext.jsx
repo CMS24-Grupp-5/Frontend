@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -8,6 +9,8 @@ export const AuthProvider = ({ children }) => {
   });
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     //Här validerar vi tokenen som finns i localStorage.
@@ -28,7 +31,8 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await fetch("https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=fhOSbniVnX5wGk_GvC5bvAzF4lnhf3B7-W9AnFct2PIJAzFu9kC0DA==",
+        const response = await fetch(
+          "https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/ValidateToken?code=fhOSbniVnX5wGk_GvC5bvAzF4lnhf3B7-W9AnFct2PIJAzFu9kC0DA==",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -79,9 +83,30 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json();
 
+      const RoleResponse = await fetch(
+        `https://accountserviceprovider-g5gnanhufngbezgt.swedencentral-01.azurewebsites.net/api/Roles/getroles?id=${data.userId}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (!RoleResponse.ok) {
+        throw new Error("Failed to fetch role");
+      }
+
+      const roleData = await RoleResponse.json();
+      localStorage.setItem("role", JSON.stringify({ role: roleData }));
+      if (roleData.role === "Admin") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+
       // Här skapar vi tokenen när en använder loggar in och sparar userId och token i localStorage
       // och sätter isAuthenticated till true.
-      const tokenResponse = await fetch("https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/GenerateToken?code=TcdLVOTzog57NqJh_XQJSTfD3qYdBB6wlpv3ekxwz9AiAzFubeO4gQ==",
+      const tokenResponse = await fetch(
+        "https://tokenprovider-csananbbhte7d3h0.swedencentral-01.azurewebsites.net/api/GenerateToken?code=TcdLVOTzog57NqJh_XQJSTfD3qYdBB6wlpv3ekxwz9AiAzFubeO4gQ==",
+
         {
           method: "POST",
           body: JSON.stringify({ userId: data.userId }),
@@ -104,6 +129,7 @@ export const AuthProvider = ({ children }) => {
       setUser(data.user);
       if (localStorage.getItem("auth")) {
         setIsAuthenticated(true);
+        navigate("/");
       }
     } catch (error) {
       console.error("Sign-in failed:", error);
@@ -139,9 +165,11 @@ export const AuthProvider = ({ children }) => {
         ? await response.json()
         : { message: await response.text() };
 
-      localStorage.setItem("user", JSON.stringify(data));
       setUser(data.user ?? null);
       setIsAuthenticated(true);
+
+      // 👉 Korrekt: anropa signIn **efter** att kontot skapats
+      await signIn({ email, password });
 
       return data;
     } catch (error) {

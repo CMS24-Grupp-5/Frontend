@@ -1,42 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useProfile } from "../../../../contexts/ProfileContext";
 import { Spinner } from "../../../Componants/Spinner/Spinner";
+import ProfileFormModal from "./ProfileFormModal";
+
 import "../SignIn/SignIn.css";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const { profile, setProfile } = useProfile();
+
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+  });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const { userId } = JSON.parse(localStorage.getItem("auth") || "{}");
+
+  useEffect(() => {
+    if (profile) {
+      setForm({
+        firstName: profile.firstName || "",
+        lastName: profile.lastName || "",
+        phoneNumber: profile.phoneNumber || "",
+      });
+    }
+  }, [profile]);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
     setError("");
     setLoading(true);
 
+    const payload = {
+      FirstName: form.firstName,
+      LastName: form.lastName,
+      PhoneNumber: form.phoneNumber,
+      UserId: userId,
+    };
+
     try {
-      const response = await fetch(
-        "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            FirstName: firstName,
-            LastName: lastName,
-            PhoneNumber: phoneNumber,
-          }),
-        }
-      );
+      const endpoint = profile
+        ? "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/update"
+        : "https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/profiles/create";
 
-      if (!response.ok) throw new Error("Profile completion failed");
+      const response = await fetch(endpoint, {
+        method: "POST", // eller "PUT" om din backend kräver det
+        headers: {
+          "x-api-key":
+            "IntcInVzZXJJZFwiOlwiMDQ2ZDFlMWItY2VlOC00NGE4LWEzYjUtYTgyNmE5Y2NjMTVjXCJ9Ig==",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      navigate("/dashboard");
+      if (!response.ok) throw new Error("Kunde inte spara profilen");
+
+      const savedProfile = await response.json();
+      setProfile(savedProfile);
+      navigate("/dashboard", { replace: true });
     } catch (err) {
-      setError(err.message || "Something went wrong");
+      setError(err.message || "Något gick fel");
     } finally {
       setLoading(false);
     }
@@ -44,45 +75,18 @@ const Profile = () => {
 
   return (
     <div className="signupContainer">
-      <h2 className="signupHeader">Complete Profile</h2>
-      <form onSubmit={handleSubmit} className="formContainer" noValidate>
-        <div className="inputWrapper">
-          <label className="inputLabel">First Name</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="inputField"
-          />
-        </div>
-
-        <div className="inputWrapper">
-          <label className="inputLabel">Last Name</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="inputField"
-          />
-        </div>
-
-        <div className="inputWrapper">
-          <label className="inputLabel">Phone Number</label>
-          <input
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            className="inputField"
-          />
-        </div>
-
-        {error && <div className="errorMessage">{error}</div>}
-        {loading && <Spinner />}
-
-        <button type="submit" className="submitButton" disabled={loading}>
-          {loading ? "Saving..." : "Save and Continue"}
-        </button>
-      </form>
+      <h2 className="signupHeader">
+        {profile ? "Redigera Profil" : "Complete Profile"}
+      </h2>
+      <ProfileFormModal
+        form={form}
+        onChange={handleChange}
+        onSave={handleSave}
+        isSaving={loading}
+        isEmbedded={true}
+        error={error}
+      />
+      {loading && <Spinner />}
     </div>
   );
 };
