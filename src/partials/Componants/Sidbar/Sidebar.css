@@ -10,6 +10,16 @@
   height: calc(100dvh - 1.5rem);
 }
 
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.sidebar a {
+  text-decoration: none;
+}
+
 .sidebar-logo {
   font-size: 1.5rem;
   color: var(--secondary-100);
@@ -24,11 +34,14 @@
   font-weight: 700;
 }
 
+.sidebar-nav {
+  flex-grow: 1;
+}
+
 .sidebar-nav ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1;
 }
 
 .sidebar-nav ul li {
@@ -52,6 +65,23 @@
 
 .sidebar-nav ul li.active {
   font-weight: 500;
+}
+
+.logout-btn {
+  background-color: transparent;
+  border: none;
+  padding: 0.7rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  margin-top: auto;
+}
+
+.logout-btn:hover {
+  background-color: var(--gray-50);
+  color: var(--gray-10);
 }
 
 .sidebar-footer {
@@ -93,23 +123,6 @@
 
 .upgrade-btn:hover {
   background-color: var(--primary-90);
-}
-
-.logout-btn {
-  background-color: var(--Gray-20);
-  color: var(--gray-90);
-  border: none;
-  padding: 0.7rem;
-  width: 100%;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-}
-
-.logout-btn:hover {
-  background-color: var(--gray-50);
-  color: var(--gray-10);
 }
 
 @media (min-width: 768px) and (max-width: 900px) {

@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import AuthLayout from "../partials/layouts/AuthLayout";
 import PortalLayout from "../partials/layouts/PortalLayout";
 import Unauthorized from "../partials/pages/auth/Unauthorized";
+import Gallery from "../partials/pages/user/Gallery/Gallery";
 import { ProfileProvider } from "../contexts/ProfileContext";
 
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
@@ -65,6 +66,7 @@ export const routes = [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/bookings", element: <UserBookings /> },
       { path: "/events", element: <EventList /> },
+      { path: "/gallery", element: <Gallery /> },
     ],
   },
   {
