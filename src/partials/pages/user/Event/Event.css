@@ -37,6 +37,12 @@
     color: var(--primary-100);
 }
 
+.event-label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-right: 0.25rem;
+}
+
 .event-date,
 .event-location {
     font-size: 0.9rem;
@@ -75,4 +81,23 @@
     border-color: var(--primary-90);
     outline: none;
     box-shadow: 0 0 0 2px rgba(100, 100, 255, 0.1);
+}
+
+.button {
+    padding: 0.5rem 1rem;
+    font-family: var(--font);
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.button-primary {
+    background-color: var(--primary-90);
+    color: white;
+}
+
+.button-primary:hover {
+    background-color: var(--primary-100);
 }
