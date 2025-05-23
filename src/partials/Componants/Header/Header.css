@@ -169,3 +169,6 @@
     color: var(--secondary-100);
   }
 }
+.clickable {
+  cursor: pointer;
+}

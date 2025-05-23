@@ -35,48 +35,85 @@ const EventList = () => {
    fetch(`https://eventviewprovider.azurewebsites.net/api/events?${params.toString()}`)
       .then(res => res.json())
       .then(data => setEvents(data))
-      .catch(err => console.error("Fel vid hämtning:", err))
+      .catch(err => console.error("Error fetching:", err))
   }, [title, location, startDate, endDate, sort, sortBy, order])
+
+const handleBook = (eventId) => {
+  const authData = JSON.parse(localStorage.getItem("auth"));
+  const userId = authData?.userId;
+
+  if (!userId) {
+    alert("No UserId found in localStorage.");
+    return;
+  }
+
+  fetch("https://bookeventprovider.azurewebsites.net/api/Booking", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      userId: userId,
+      eventId: eventId
+    })
+  })
+    .then(res => {
+      if (!res.ok) {
+        return res.text().then(text => { throw new Error(text); });
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log("Booking created:", data);
+      alert("Booking successful!");
+    })
+    .catch(err => {
+      console.error("Booking error:", err);
+      alert("Booking failed.");
+    });
+};
+
 
   return (
     <div className="event-list">
-      <h1>Kommande evenemang</h1>
+      <h1>Upcoming Events</h1>
       <div className="filters">
-        <input type="text" placeholder="Sök titel" value={title} onChange={e => setTitle(e.target.value)} />
-        <input type="text" placeholder="Plats" value={location} onChange={e => setLocation(e.target.value)} />
+        <input type="text" placeholder="Search" value={title} onChange={e => setTitle(e.target.value)} />
+        <input type="text" placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />
         
         <input type="date"
-        placeholder="Startdatum" 
+        placeholder="Start date" 
         value={startDate} 
         onChange={e => setStartDate(e.target.value)} 
-        title="Startdatum"
+        title="Start date"
         />
         <input type="date"
-        placeholder="Slutdatum"
+        placeholder="End date"
         value={endDate} 
         onChange={e => setEndDate(e.target.value)} 
-        title="Slutdaum"
+        title="End date"
         />
 
         <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
-          <option value="title">Sortera efter titel</option>
-          <option value="date">Sortera efter datum</option>
+          <option value="title">Sort by title</option>
+          <option value="date">Sort by date</option>
         </select>
         <select value={order} onChange={e => setOrder(e.target.value)}>
-          <option value="asc">(A-Ö / äldst först)</option>
-          <option value="desc">(Ö-A / senast först)</option>
+          <option value="asc">(A-Ö / oldest first)</option>
+          <option value="desc">(Ö-A / newest first)</option>
         </select>
       </div>
 
       <div className="events">
         {events.map((event) => (
-          <div key={event.id} className="event-card">
-            <h2 className="event-title">{event.title}</h2>
-            <p className="event-date">{event.date.split('T')[0]}</p>
-            <p className="event-location">{event.location}</p>
-            <p className="event-description">{event.description}</p>
-          </div>
-        ))}
+        <div key={event.id} className="event-card">
+          <h2 className="event-title">{event.title}</h2>
+          <p className="event-date"><span className="event-label">Date:</span> {event.date.split('T')[0]}</p>
+          <p className="event-location"><span className="event-label">Location:</span> {event.location}</p>
+          <p className="event-description"><span className="event-label">Description:</span> {event.description}</p>
+          <button className="button button-primary" onClick={() => handleBook(event.id)}>Book</button>
+        </div>
+      ))}
       </div>
     </div>
   )
