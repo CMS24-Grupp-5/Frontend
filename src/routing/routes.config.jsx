@@ -9,7 +9,6 @@ import { ProfileProvider } from "../contexts/ProfileContext";
 
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
 
-
 const SignUpPassword = lazy(() =>
   import("../partials/pages/auth/SignUp/SignUpPassword")
 );
@@ -30,6 +29,9 @@ const EventList = lazy(() => import("../partials/pages/user/Event/EventList"));
 
 const AdminDashboard = lazy(() => import("../partials/pages/admin/Dashboard"));
 const AdminBookings = lazy(() => import("../partials/pages/admin/Bookings"));
+const PaymentPage = lazy(() =>
+  import("../partials/pages/user/Payment/PaymentPage")
+);
 
 export const routes = [
   {
@@ -67,6 +69,7 @@ export const routes = [
       { path: "/bookings", element: <UserBookings /> },
       { path: "/events", element: <EventList /> },
       { path: "/gallery", element: <Gallery /> },
+      { path: "/payment/:eventId", element: <PaymentPage /> },
     ],
   },
   {

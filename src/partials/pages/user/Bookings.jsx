@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './Event/Event.css';
+import React, { useEffect, useState } from "react";
+import "./Event/Event.css";
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -20,10 +20,12 @@ const MyBookings = () => {
       return;
     }
 
-    fetch(`https://bookeventprovider.azurewebsites.net/api/booking/by-user?userId=${userId}`)
-      .then(res => res.json())
-      .then(data => setBookings(data))
-      .catch(err => {
+    fetch(
+      `https://bookeventprovider.azurewebsites.net/api/booking/by-user?userId=${userId}`
+    )
+      .then((res) => res.json())
+      .then((data) => setBookings(data))
+      .catch((err) => {
         console.error("Error retrieving bookings", err);
         setError("Could not retrieve your bookings.");
       });
@@ -31,21 +33,24 @@ const MyBookings = () => {
 
   const fetchEvents = () => {
     fetch("https://eventprovider20250506133954.azurewebsites.net/api/Events")
-      .then(res => res.json())
-      .then(data => setEvents(data))
-      .catch(err => {
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => {
         console.error("Error retrieving events:", err);
         setError("Could not retrieve event information.");
       });
   };
 
-  const getEventInfo = (eventId) => events.find(e => e.id === eventId);
+  const getEventInfo = (eventId) => events.find((e) => e.id === eventId);
 
   const handleCancel = (bookingId) => {
-    fetch(`https://bookeventprovider.azurewebsites.net/api/booking/${bookingId}`, {
-      method: 'DELETE'
-    })
-      .then(res => {
+    fetch(
+      `https://bookeventprovider.azurewebsites.net/api/booking/${bookingId}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((res) => {
         if (!res.ok) throw new Error("Cancellation failed.");
         return res.text();
       })
@@ -53,7 +58,7 @@ const MyBookings = () => {
         alert("Booking cancelled.");
         fetchBookings(); // Uppdatera listan
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error during cancellation:", err);
         alert("Could not cancel.");
       });
@@ -62,18 +67,34 @@ const MyBookings = () => {
   return (
     <div className="event-list">
       <h1>My Events</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <div className="events">
         {bookings.map((booking) => {
           const event = getEventInfo(booking.eventId);
           return (
             <div key={booking.bookingId} className="event-card">
-              <h2 className="event-title">{event ? event.title : "Unknown event."}</h2>
-              <p className="event-date"><span className="event-label">Date:</span> {event ? event.date.split("T")[0] : "?"}</p>
-              <p className="event-location"><span className="event-label">Location:</span> {event ? event.location : "?"}</p>
-              <p className="event-description"><span className="event-label">Booked:</span> {booking.bookingDate.split("T")[0]}</p>
-              <button className="button button-primary" onClick={() => handleCancel(booking.bookingId)}>Cancel booking</button>
+              <h2 className="event-title">
+                {event ? event.title : "Unknown event."}
+              </h2>
+              <p className="event-date">
+                <span className="event-label">Date:</span>{" "}
+                {event ? event.date.split("T")[0] : "?"}
+              </p>
+              <p className="event-location">
+                <span className="event-label">Location:</span>{" "}
+                {event ? event.location : "?"}
+              </p>
+              <p className="event-description">
+                <span className="event-label">Booked:</span>{" "}
+                {booking.bookingDate.split("T")[0]}
+              </p>
+              <button
+                className="button button-primary"
+                onClick={() => handleCancel(booking.bookingId)}
+              >
+                Cancel booking
+              </button>
             </div>
           );
         })}
