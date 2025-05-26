@@ -53,9 +53,11 @@ const Sidebar = ({ isOpen }) => {
               <i className="fa-solid fa-image"></i> <span> Gallery </span>
             </li>
           </a>
-          <li>
-            <i className="fa-solid fa-star"></i> <span> Feedback </span>
-          </li>
+          <a href="/feedback">
+            <li>
+              <i className="fa-solid fa-star"></i> <span> Feedback </span>
+            </li>
+          </a>
         </ul>
       </nav>
       <button onClick={Logout} className="logout-btn">

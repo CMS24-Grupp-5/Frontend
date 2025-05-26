@@ -6,9 +6,9 @@ import PortalLayout from "../partials/layouts/PortalLayout";
 import Unauthorized from "../partials/pages/auth/Unauthorized";
 import Gallery from "../partials/pages/user/Gallery/Gallery";
 import { ProfileProvider } from "../contexts/ProfileContext";
+import Feedback from "../partials/pages/user/Feedback/Feedback";
 
 const NotFound = lazy(() => import("../partials/pages/user/NotFound/NotFound"));
-
 
 const SignUpPassword = lazy(() =>
   import("../partials/pages/auth/SignUp/SignUpPassword")
@@ -67,6 +67,7 @@ export const routes = [
       { path: "/bookings", element: <UserBookings /> },
       { path: "/events", element: <EventList /> },
       { path: "/gallery", element: <Gallery /> },
+      { path: "/feedback", element: <Feedback /> },
     ],
   },
   {
