@@ -33,6 +33,9 @@ const PaymentPage = lazy(() =>
   import("../partials/pages/user/Payment/PaymentPage")
 );
 
+const Financials = lazy(() =>
+  import("../partials/pages/user/Financials/Financials")
+);
 export const routes = [
   {
     children: [{ path: "/", element: <Navigate to="/dashboard" replace /> }],
@@ -70,6 +73,7 @@ export const routes = [
       { path: "/events", element: <EventList /> },
       { path: "/gallery", element: <Gallery /> },
       { path: "/payment/:eventId", element: <PaymentPage /> },
+      { path: "/Financials", element: <Financials /> },
     ],
   },
   {

@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import "./Payment.css"; // Återanvänd dina CSS-klasser
+import { Spinner } from "../../../Componants/Spinner/Spinner";
+import "./Payment.css";
 
-// Ersätt med din riktiga Stripe publishable key
 const stripePromise = loadStripe(
   "pk_test_51RSckXFJsmypUYbAc6oWPX53FJP60zmLOVe7JX2nzpSJszf4JzNlMUjLKhYeO3YeES3WJVFrtFuLLDyaWYhUQ8SU00pBESH7Hw"
 );
@@ -11,13 +11,13 @@ const stripePromise = loadStripe(
 const PaymentPage = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     phoneNumber: "",
   });
 
-  // 1. Hämta eventinfo
   useEffect(() => {
     fetch(
       `https://eventviewprovider.azurewebsites.net/api/events?id=${eventId}`
@@ -43,7 +43,6 @@ const PaymentPage = () => {
       });
   }, [eventId]);
 
-  // 2. Hantera betalning
   const handleCheckout = async () => {
     const auth = JSON.parse(localStorage.getItem("auth"));
     const userId = auth?.userId;
@@ -51,9 +50,12 @@ const PaymentPage = () => {
     if (!userId) return alert("Du måste vara inloggad.");
     if (!form.firstName || !form.lastName || !form.phoneNumber)
       return alert("Fyll i alla fält.");
+
     const amount = event?.price ?? 3.0;
 
     try {
+      setLoading(true);
+
       const stripe = await stripePromise;
 
       const response = await fetch(
@@ -64,7 +66,7 @@ const PaymentPage = () => {
           body: JSON.stringify({
             eventId,
             userId,
-            amount, // 💰 skickar priset som decimal
+            amount,
             ...form,
           }),
         }
@@ -77,16 +79,21 @@ const PaymentPage = () => {
 
       const { sessionId } = await response.json();
       await stripe.redirectToCheckout({ sessionId });
+      // Ingen setLoading(false) här – man lämnar sidan vid redirect
     } catch (err) {
+      setLoading(false);
       console.error("Stripe error:", err);
       alert("Fel vid betalning.");
     }
   };
 
-  // 3. Laddningsstate
-  if (!event) return <p>Laddar event...</p>;
+  if (!event)
+    return (
+      <p>
+        <Spinner />
+      </p>
+    );
 
-  // 4. Sidan med eventinfo + formulär
   return (
     <div className="event-list">
       <div className="event-card">
@@ -101,7 +108,6 @@ const PaymentPage = () => {
           <span className="event-label">Description:</span> {event.description}
         </p>
 
-        {/* Formulär */}
         <input
           className="inputField"
           placeholder="Förnamn"
@@ -121,9 +127,13 @@ const PaymentPage = () => {
           onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
         />
 
-        <button className="button button-primary" onClick={handleCheckout}>
-          Gå till betalning
-        </button>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <button className="button button-primary" onClick={handleCheckout}>
+            Gå till betalning
+          </button>
+        )}
       </div>
     </div>
   );

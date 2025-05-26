@@ -52,15 +52,12 @@ const EventList = () => {
       return;
     }
 
-    // Skicka användaren till betalningssidan för det eventet
     navigate(`/payment/${eventId}`);
   };
 
   return (
     <div className="event-list">
       <h1>Upcoming Events</h1>
-
-      {/* Filterformulär */}
       <div className="filters">
         <input
           type="text"
@@ -95,8 +92,6 @@ const EventList = () => {
           <option value="desc">(Ö–A / newest first)</option>
         </select>
       </div>
-
-      {/* Lista av event */}
       <div className="events">
         {events.map((event) => (
           <div key={event.id} className="event-card">
