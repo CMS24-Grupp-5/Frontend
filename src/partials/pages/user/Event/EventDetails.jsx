@@ -69,7 +69,7 @@ const EventDetails = () => {
       if (!res.ok) throw new Error("Kunde inte ta bort evenemanget.");
 
       alert("Evenemang borttaget!");
-      //   navigate('/events');
+      navigate('/events');
     } catch (err) {
       alert("Fel: " + err.message);
     }
@@ -121,13 +121,16 @@ const EventDetails = () => {
         {validationErrors.description && <p className="error-message">{validationErrors.description}</p>}
       </div>
 
-      <button className="save-button" onClick={handleSave} disabled={saving}>
-        {saving ? "Sparar..." : "Spara"}
-      </button>
+        <div className="buttons">
+            <button className="button save-button" onClick={handleSave} disabled={saving}>
+                {saving ? "Sparar..." : "Spara"}
+            </button>
 
-      <button className="delete-button" onClick={handleDelete}>
-        Ta bort evenemang
-      </button>
+            <button className="button button-secondary" onClick={handleDelete}>
+                Ta bort evenemang
+            </button>
+        </div>
+      
     </div>
   );
 };

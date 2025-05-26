@@ -78,10 +78,13 @@ const handleBook = (eventId) => {
 
 
   return (
+    
     <div className="event-list">
-      <h1>Upcoming Events</h1>
+      <h1>Upcoming Events 
+        <button className='button create-event' onClick={() => navigate('/events/create')}>Create new Event</button>
+      </h1>
 
-      <button onClick={() => navigate('/events/create')}>Create new Event</button>
+      
       <div className="filters">
         <input type="text" placeholder="Search" value={title} onChange={e => setTitle(e.target.value)} />
         <input type="text" placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />

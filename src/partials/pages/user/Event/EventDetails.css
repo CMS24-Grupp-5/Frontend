@@ -67,3 +67,36 @@ textarea {
   font-size: 0.9rem;
   margin-top: 4px;
 }
+
+.delete-event {
+  background-color: var(--primary-100);
+  color: white;
+}
+
+.button {
+    padding: 0.5rem 1rem;
+    font-family: var(--font);
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.button-primary {
+    background-color: var(--primary-90);
+    color: white;
+}
+
+.button-primary:hover {
+    background-color: var(--primary-100);
+}
+
+.button-secondary {
+  margin-left: 1rem;
+}
+
+.button.create-event {
+  background-color: var(--primary-100);
+  color: white;
+}
