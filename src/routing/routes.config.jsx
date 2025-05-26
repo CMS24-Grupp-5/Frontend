@@ -27,6 +27,8 @@ const SignIn = lazy(() => import("../partials/pages/auth/SignIn/SignIn"));
 const UserDashboard = lazy(() => import("../partials/pages/user/Dashboard"));
 const UserBookings = lazy(() => import("../partials/pages/user/Bookings"));
 const EventList = lazy(() => import("../partials/pages/user/Event/EventList"));
+const EventDetails = lazy(() => import("../partials/pages/user/Event/EventDetails"));
+const CreateEvent = lazy(() => import("../partials/pages/user/Event/CreateEvent"));
 
 const AdminDashboard = lazy(() => import("../partials/pages/admin/Dashboard"));
 const AdminBookings = lazy(() => import("../partials/pages/admin/Bookings"));
@@ -66,6 +68,8 @@ export const routes = [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/bookings", element: <UserBookings /> },
       { path: "/events", element: <EventList /> },
+      { path: "/events/create", element: <CreateEvent /> },
+      { path: "/events/details/:id", element: <EventDetails /> },
       { path: "/gallery", element: <Gallery /> },
       { path: "/feedback", element: <Feedback /> },
     ],

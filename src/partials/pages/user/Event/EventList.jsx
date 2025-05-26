@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Event.css'
+import { useNavigate } from "react-router-dom";
 
 const EventList = () => {
   const [events, setEvents] = useState([])
@@ -17,6 +18,8 @@ const EventList = () => {
   const [sortBy, setSortBy] = useState('title')
   const [order, setOrder] = useState('asc')
   const [sort, setSort] = useState(true)
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -75,8 +78,13 @@ const handleBook = (eventId) => {
 
 
   return (
+    
     <div className="event-list">
-      <h1>Upcoming Events</h1>
+      <h1>Upcoming Events 
+        <button className='button create-event' onClick={() => navigate('/events/create')}>Create new Event</button>
+      </h1>
+
+      
       <div className="filters">
         <input type="text" placeholder="Search" value={title} onChange={e => setTitle(e.target.value)} />
         <input type="text" placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />
@@ -112,6 +120,7 @@ const handleBook = (eventId) => {
           <p className="event-location"><span className="event-label">Location:</span> {event.location}</p>
           <p className="event-description"><span className="event-label">Description:</span> {event.description}</p>
           <button className="button button-primary" onClick={() => handleBook(event.id)}>Book</button>
+          <button className="button button-secondary" onClick={() => navigate('/events/details/' + event.id)}>Details</button>
         </div>
       ))}
       </div>

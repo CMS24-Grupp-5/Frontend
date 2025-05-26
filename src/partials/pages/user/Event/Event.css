@@ -8,6 +8,9 @@
 .event-list h1 {
     font-size: 2rem;
     margin-bottom: 1,5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .events {
@@ -100,4 +103,13 @@
 
 .button-primary:hover {
     background-color: var(--primary-100);
+}
+
+.button-secondary {
+  margin-left: 1rem;
+}
+
+.button.create-event {
+  background-color: var(--primary-100);
+  color: white;
 }
