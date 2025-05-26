@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
   });
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(null);
-  
 
   const navigate = useNavigate();
 
@@ -130,7 +129,30 @@ export const AuthProvider = ({ children }) => {
       setUser(data.user);
       if (localStorage.getItem("auth")) {
         setIsAuthenticated(true);
-        navigate("/");
+
+        try {
+          const profileResponse = await fetch(
+            `https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/Profiles/${userId}`,
+            {
+              method: "GET",
+              headers: {
+                "x-api-key":
+                  "IntcInVzZXJJZFwiOlwiMDQ2ZDFlMWItY2VlOC00NGE4LWEzYjUtYTgyNmE5Y2NjMTVjXCJ9Ig==",
+              },
+            }
+          );
+          if (!profileResponse.ok) throw new Error("Profile not found");
+
+          const profile = await profileResponse.json();
+          localStorage.setItem("profile", JSON.stringify(profile));
+          if (!profile?.firstName || !profile?.lastName) {
+            navigate("/profile");
+          } else {
+            navigate("/");
+          }
+        } catch (error) {
+          navigate("/profile");
+        }
       }
     } catch (error) {
       console.error("Sign-in failed:", error);
@@ -138,8 +160,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signUpEmail = async ({ email }) => {
-    try{
-      
+    try {
       const response = await fetch(
         "https://ventixe-functions.azurewebsites.net/api/HandleEmailAddress?code=qMjAo7b3R3kYNeGXLEXWZB0mwQrfED-N7Q9IUX2G2zPqAzFuVRRaXw==",
         {
@@ -147,7 +168,36 @@ export const AuthProvider = ({ children }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: (email),
+          body: email,
+        }
+      );
+      const contentType = response.headers.get("content-type");
+      if (!response.ok) {
+        const errorData = contentType?.includes("application/json")
+          ? await response.json()
+          : await response.text();
+        throw new Error(errorData.message || errorData || "Signup failed");
+      }
+
+      localStorage.setItem("email", JSON.stringify(email));
+    } catch (error) {
+      console.error("Sign-up failed:", error);
+      throw error;
+    }
+  };
+
+  const signUpValidate = async ({ code }) => {
+    try {
+      const response = await fetch(
+        "https://ventixe-functions.azurewebsites.net/api/ValidateVerificationCode?code=iomPeQU2joHw9X5xdcpCOK4Rp97qYeMDHKvWS261NoIJAzFuCb3p5g==",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            code,
+          }),
         }
       );
 
@@ -157,48 +207,17 @@ export const AuthProvider = ({ children }) => {
         const errorData = contentType?.includes("application/json")
           ? await response.json()
           : await response.text();
-        throw new Error(errorData.message || errorData || "Signup failed");
+        throw new Error(
+          errorData.message || errorData || "Verify email failed"
+        );
       }
 
-      localStorage.setItem("email", JSON.stringify(email));
-
+      return true;
     } catch (error) {
       console.error("Sign-up failed:", error);
-      throw error;
+      return false;
     }
   };
-
-
-  const signUpValidate = async ({ code }) => {
-  try {
-    const response = await fetch(
-       "https://ventixe-functions.azurewebsites.net/api/ValidateVerificationCode?code=iomPeQU2joHw9X5xdcpCOK4Rp97qYeMDHKvWS261NoIJAzFuCb3p5g==",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          code
-        }),
-      }
-    );
-
-    const contentType = response.headers.get("content-type");
-    
-    if (!response.ok) {
-      const errorData = contentType?.includes("application/json")
-        ? await response.json()
-        : await response.text();
-      throw new Error(errorData.message || errorData || "Verify email failed");
-    }
-    
-    return true;
-  } catch (error) {
-    console.error("Sign-up failed:", error);
-    return false;
-  }
-};
 
   const signUp = async ({ email, password }) => {
     try {
@@ -231,8 +250,6 @@ export const AuthProvider = ({ children }) => {
 
       setUser(data.user ?? null);
       setIsAuthenticated(true);
-
-      // 👉 Korrekt: anropa signIn **efter** att kontot skapats
       await signIn({ email, password });
 
       return data;
@@ -244,7 +261,15 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, isAdmin, user, signUpEmail, signUpValidate, signUp, signIn }}
+      value={{
+        isAuthenticated,
+        isAdmin,
+        user,
+        signUpEmail,
+        signUpValidate,
+        signUp,
+        signIn,
+      }}
     >
       {children}
     </AuthContext.Provider>
