@@ -79,7 +79,6 @@ const PaymentPage = () => {
 
       const { sessionId } = await response.json();
       await stripe.redirectToCheckout({ sessionId });
-      // Ingen setLoading(false) här – man lämnar sidan vid redirect
     } catch (err) {
       setLoading(false);
       console.error("Stripe error:", err);
