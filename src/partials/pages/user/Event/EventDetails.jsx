@@ -16,7 +16,7 @@ const EventDetails = () => {
     const loadEvent = async () => {
       try {
         const res = await fetch(`https://eventprovider20250506133954.azurewebsites.net/api/Events/${id}`);
-        if (!res.ok) throw new Error("Något gick fel vid hämtning.");
+        if (!res.ok) throw new Error("Error when fetching event.");
         const data = await res.json();
         setEvent(data);
       } catch (err) {
@@ -47,41 +47,39 @@ const EventDetails = () => {
         body: JSON.stringify(event),
       });
 
-      if (!res.ok) throw new Error("Kunde inte spara ändringar.");
-
-      //else ändringar kunde sparas -> redirect till events-sidan
+      if (!res.ok) throw new Error("Could not save changes, error...");
       navigate("/events");
     } catch (err) {
-      alert("Fel: " + err.message);
+      alert("Error: " + err.message);
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("Är du säker på att du vill ta bort detta evenemang?")) return;
+    if (!window.confirm("Are you sure you want to delete this event?")) return;
 
     try {
       const res = await fetch(`https://eventprovider20250506133954.azurewebsites.net/api/Events/${id}`, {
         method: "DELETE",
       });
 
-      if (!res.ok) throw new Error("Kunde inte ta bort evenemanget.");
+      if (!res.ok) throw new Error("Could not delete the event, something went wrong..");
 
-      alert("Evenemang borttaget!");
+      alert("Event deleted!");
       navigate('/events');
     } catch (err) {
-      alert("Fel: " + err.message);
+      alert("Error: " + err.message);
     }
   };
 
   const validate = () => {
     const newErrors = {};
 
-    if (!event.title?.trim()) newErrors.title = "Titel krävs.";
-    if (!event.date) newErrors.date = "Datum krävs.";
-    if (!event.location?.trim()) newErrors.location = "Plats krävs.";
-    if (!event.description?.trim()) newErrors.description = "Beskrivning krävs.";
+    if (!event.title?.trim()) newErrors.title = "Title is required.";
+    if (!event.date) newErrors.date = "Date is required.";
+    if (!event.location?.trim()) newErrors.location = "Location is required.";
+    if (!event.description?.trim()) newErrors.description = "Description is required.";
 
     setValidationErrors(newErrors);
 
@@ -89,45 +87,45 @@ const EventDetails = () => {
     return hasNoErrors;
   };
 
-  if (loading) return <p>Laddar evenemang...</p>;
-  if (error) return <p>Fel: {error}</p>;
-  if (!event) return <p>Evenemanget hittades inte.</p>;
+  if (loading) return <p>Loading event...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!event) return <p>Event could not be found.</p>;
 
   return (
     <div className="event-details-card">
-      <h2>Redigera Evenemang</h2>
+      <h2>Edit Event</h2>
 
       <div className="form-group">
-        <label>Titel</label>
+        <label>Title</label>
         <input type="text" name="title" value={event.title} onChange={handleChange} />
         {validationErrors.title && <p className="error-message">{validationErrors.title}</p>}
       </div>
 
       <div className="form-group">
-        <label>Datum</label>
+        <label>Date</label>
         <input type="date" name="date" value={event.date.split("T")[0]} onChange={handleChange} />
         {validationErrors.date && <p className="error-message">{validationErrors.date}</p>}
       </div>
 
       <div className="form-group">
-        <label>Plats</label>
+        <label>Location</label>
         <input type="text" name="location" value={event.location} onChange={handleChange} />
         {validationErrors.location && <p className="error-message">{validationErrors.location}</p>}
       </div>
 
       <div className="form-group">
-        <label>Beskrivning</label>
+        <label>Description</label>
         <textarea value={event.description} name="description" onChange={handleChange} />
         {validationErrors.description && <p className="error-message">{validationErrors.description}</p>}
       </div>
 
         <div className="buttons">
             <button className="button save-button" onClick={handleSave} disabled={saving}>
-                {saving ? "Sparar..." : "Spara"}
+                {saving ? "Saving..." : "Save"}
             </button>
 
             <button className="button button-secondary" onClick={handleDelete}>
-                Ta bort evenemang
+                Delete event
             </button>
         </div>
       
