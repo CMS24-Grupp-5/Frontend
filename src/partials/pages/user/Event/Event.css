@@ -101,3 +101,7 @@
 .button-primary:hover {
     background-color: var(--primary-100);
 }
+
+.button-secondary {
+  margin-left: 1rem;
+}
