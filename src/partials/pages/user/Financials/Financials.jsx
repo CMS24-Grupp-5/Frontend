@@ -37,12 +37,12 @@ const Financials = () => {
 
   return (
     <div className="financials-container">
-      <h1>Betalningshistorik</h1>
+      <h1>Betalningsöversikt</h1>
 
       {error && <p className="error-text">{error}</p>}
 
       {payments.length === 0 ? (
-        <p>Inga betalningar hittades.</p>
+        <p>Inga registrerade betalningar.</p>
       ) : (
         <table className="financials-table">
           <thead>
@@ -51,24 +51,41 @@ const Financials = () => {
               <th>Datum</th>
               <th>Belopp</th>
               <th>Status</th>
+              <th>Ticket Namn</th>
               <th>Namn</th>
               <th>Telefon</th>
             </tr>
           </thead>
           <tbody>
             {payments.map((p) => (
-              <tr key={p.paymentId}>
-                <td>{p.eventId}</td>
-                <td>{p.bookingDate.split("T")[0]}</td>
-                <td>{p.amount} kr</td>
-                <td className={p.isPaid ? "paid-status" : "unpaid-status"}>
-                  {p.isPaid ? "Betald" : "Ej betald"}
-                </td>
-                <td>
-                  {p.firstName} {p.lastName}
-                </td>
-                <td>{p.phoneNumber}</td>
-              </tr>
+              <React.Fragment key={p.paymentId}>
+                {/* Bokaren */}
+                <tr className="payment-row">
+                  <td>{p.eventId}</td>
+                  <td>{p.bookingDate.split("T")[0]}</td>
+                  <td>{p.amount} kr</td>
+                  <td className={p.isPaid ? "paid-status" : "unpaid-status"}>
+                    {p.isPaid ? "Betald" : "Ej betald"}
+                  </td>
+
+                  {p.tickets?.length > 0 &&
+                    p.tickets.map((ticket, index) => (
+                      <td
+                        key={`${p.paymentId}-ticket-${index}`}
+                        className="ticket-row"
+                      >
+                        {ticket.firstName} {ticket.lastName}
+                      </td>
+                    ))}
+
+                  <td>
+                    {p.bookedBy?.firstName} {p.bookedBy?.lastName}
+                  </td>
+                  <td>{p.bookedBy?.phoneNumber}</td>
+                </tr>
+
+                {/* Biljetter */}
+              </React.Fragment>
             ))}
           </tbody>
         </table>

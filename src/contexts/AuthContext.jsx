@@ -132,12 +132,19 @@ export const AuthProvider = ({ children }) => {
 
         try {
           const profileResponse = await fetch(
-            `https://your-profile-api-url/api/profiles/${data.userId}`
+            `https://profileprovider-fngrbjb8h9dee0d6.swedencentral-01.azurewebsites.net/api/Profiles/${userId}`,
+            {
+              method: "GET",
+              headers: {
+                "x-api-key":
+                  "IntcInVzZXJJZFwiOlwiMDQ2ZDFlMWItY2VlOC00NGE4LWEzYjUtYTgyNmE5Y2NjMTVjXCJ9Ig==",
+              },
+            }
           );
-
           if (!profileResponse.ok) throw new Error("Profile not found");
 
           const profile = await profileResponse.json();
+          localStorage.setItem("profile", JSON.stringify(profile));
           if (!profile?.firstName || !profile?.lastName) {
             navigate("/profile");
           } else {

@@ -1,7 +1,8 @@
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Spinner } from "../../../Componants/Spinner/Spinner";
+import { useProfile } from "../../../../contexts/ProfileContext";
 import "./Payment.css";
 
 const stripePromise = loadStripe(
@@ -10,12 +11,15 @@ const stripePromise = loadStripe(
 
 const PaymentPage = () => {
   const { eventId } = useParams();
+  const { profile } = useProfile();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [useOwnInfo, setUseOwnInfo] = useState(false);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     phoneNumber: "",
+    email: "",
   });
 
   useEffect(() => {
@@ -27,15 +31,9 @@ const PaymentPage = () => {
         return res.json();
       })
       .then((data) => {
-        console.log("API-svar:", data);
         const foundEvent = Array.isArray(data)
           ? data.find((e) => String(e.id) === String(eventId))
           : data;
-
-        if (!foundEvent) {
-          console.warn("Inget event hittades med id:", eventId);
-        }
-
         setEvent(foundEvent);
       })
       .catch((err) => {
@@ -43,19 +41,34 @@ const PaymentPage = () => {
       });
   }, [eventId]);
 
+  const handleUseOwnInfoToggle = () => {
+    setUseOwnInfo((prev) => {
+      const useInfo = !prev;
+      if (useInfo && profile) {
+        setForm({
+          firstName: profile.firstName || "",
+          lastName: profile.lastName || "",
+          phoneNumber: profile.phoneNumber || "",
+          email: profile.email || "",
+        });
+      } else {
+        setForm({ firstName: "", lastName: "", phoneNumber: "", email: "" });
+      }
+      return useInfo;
+    });
+  };
+
   const handleCheckout = async () => {
-    const auth = JSON.parse(localStorage.getItem("auth"));
-    const userId = auth?.userId;
+    const userId = profile?.userId;
 
     if (!userId) return alert("Du måste vara inloggad.");
-    if (!form.firstName || !form.lastName || !form.phoneNumber)
+    if (!form.firstName || !form.lastName || !form.phoneNumber || !form.email)
       return alert("Fyll i alla fält.");
 
     const amount = event?.price ?? 3.0;
 
     try {
       setLoading(true);
-
       const stripe = await stripePromise;
 
       const response = await fetch(
@@ -67,7 +80,19 @@ const PaymentPage = () => {
             eventId,
             userId,
             amount,
-            ...form,
+            bookedBy: {
+              firstName: form.firstName,
+              lastName: form.lastName,
+              phoneNumber: form.phoneNumber,
+              email: form.email,
+            },
+            tickets: [
+              {
+                firstName: form.firstName,
+                lastName: form.lastName,
+                phoneNumber: form.phoneNumber,
+              },
+            ],
           }),
         }
       );
@@ -102,23 +127,42 @@ const PaymentPage = () => {
           <span className="event-label">Description:</span> {event.description}
         </p>
 
+        <label className="checkbox-label" style={{ marginBottom: "1rem" }}>
+          <input
+            type="checkbox"
+            checked={useOwnInfo}
+            onChange={handleUseOwnInfoToggle}
+          />{" "}
+          Använd mina uppgifter (från kontot)
+        </label>
+
+        <input
+          className="inputField"
+          placeholder="E-post"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+        />
+
         <input
           className="inputField"
           placeholder="Förnamn"
           value={form.firstName}
           onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+          disabled={useOwnInfo}
         />
         <input
           className="inputField"
           placeholder="Efternamn"
           value={form.lastName}
           onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+          disabled={useOwnInfo}
         />
         <input
           className="inputField"
           placeholder="Telefonnummer"
           value={form.phoneNumber}
           onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
+          disabled={useOwnInfo}
         />
 
         {loading ? (
