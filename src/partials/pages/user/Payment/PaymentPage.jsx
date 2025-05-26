@@ -86,12 +86,7 @@ const PaymentPage = () => {
     }
   };
 
-  if (!event)
-    return (
-      <p>
-        <Spinner />
-      </p>
-    );
+  if (!event) return <Spinner />;
 
   return (
     <div className="event-list">
