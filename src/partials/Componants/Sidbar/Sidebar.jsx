@@ -44,10 +44,12 @@ const Sidebar = ({ isOpen }) => {
               <span> Events </span>
             </li>
           </a>
-          <li>
-            <i className="fa-solid fa-dollar-sign"></i>{" "}
-            <span> Financials </span>
-          </li>
+          <a href="/Financials">
+            <li>
+              <i className="fa-solid fa-dollar-sign"></i>{" "}
+              <span> Financials </span>
+            </li>
+          </a>
           <a href="/gallery">
             <li>
               <i className="fa-solid fa-image"></i> <span> Gallery </span>

@@ -33,11 +33,10 @@ const SignUpStepThree = () => {
 
     setLoading(true);
     try {
-    
-    let email = localStorage.getItem("email");
-    signUp({ email, password })
-    
-    navigate("/profile");
+      let email = JSON.parse(localStorage.getItem("email"));
+      signUp({ email, password });
+
+      navigate("/profile");
     } catch (err) {
       setGeneralError(err.message || "Signup failed");
     } finally {
@@ -49,7 +48,6 @@ const SignUpStepThree = () => {
     <div className="signupContainer">
       <h2 className="signupHeader">Sign Up</h2>
       <form onSubmit={handleSubmit} className="formContainer" noValidate>
-
         <div className="inputWrapper">
           <label className="inputLabel">Password</label>
           <input
