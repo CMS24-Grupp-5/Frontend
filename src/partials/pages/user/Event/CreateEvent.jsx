@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./EventDetails.css"; // Reuse existing styling
+import "./EventDetails.css";
 
 const CreateEvent = () => {
   const [event, setEvent] = useState({
@@ -23,10 +23,10 @@ const CreateEvent = () => {
   const validate = () => {
     const errors = {};
 
-    if (!event.title.trim()) errors.title = "Titel krävs.";
-    if (!event.date) errors.date = "Datum krävs.";
-    if (!event.location.trim()) errors.location = "Plats krävs.";
-    if (!event.description.trim()) errors.description = "Beskrivning krävs.";
+    if (!event.title.trim()) errors.title = "Title is required.";
+    if (!event.date) errors.date = "Date is required.";
+    if (!event.location.trim()) errors.location = "Location is required.";
+    if (!event.description.trim()) errors.description = "Description is required.";
 
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
@@ -45,9 +45,9 @@ const CreateEvent = () => {
         body: JSON.stringify(event),
       });
 
-      if (!res.ok) throw new Error("Kunde inte skapa evenemang.");
+      if (!res.ok) throw new Error("Could not create event.");
 
-      alert("Evenemang skapat!");
+      alert("Event created!");
       navigate("/events");
     } catch (err) {
       setError(err.message);
@@ -58,36 +58,36 @@ const CreateEvent = () => {
 
   return (
     <div className="event-details-card">
-      <h2>Skapa Nytt Evenemang</h2>
+      <h2>Create new Event</h2>
 
       {error && <p className="error-message">Fel: {error}</p>}
 
       <div className="form-group">
-        <label>Titel</label>
+        <label>Title</label>
         <input type="text" name="title" value={event.title} onChange={handleChange} />
         {validationErrors.title && <p className="error-message">{validationErrors.title}</p>}
       </div>
 
       <div className="form-group">
-        <label>Datum</label>
+        <label>Date</label>
         <input type="date" name="date" value={event.date} onChange={handleChange} />
         {validationErrors.date && <p className="error-message">{validationErrors.date}</p>}
       </div>
 
       <div className="form-group">
-        <label>Plats</label>
+        <label>Location</label>
         <input type="text" name="location" value={event.location} onChange={handleChange} />
         {validationErrors.location && <p className="error-message">{validationErrors.location}</p>}
       </div>
 
       <div className="form-group">
-        <label>Beskrivning</label>
+        <label>Description</label>
         <textarea name="description" value={event.description} onChange={handleChange} />
         {validationErrors.description && <p className="error-message">{validationErrors.description}</p>}
       </div>
 
       <button className="save-button" onClick={handleSave} disabled={saving}>
-        {saving ? "Sparar..." : "Skapa"}
+        {saving ? "Saving..." : "Create"}
       </button>
     </div>
   );
